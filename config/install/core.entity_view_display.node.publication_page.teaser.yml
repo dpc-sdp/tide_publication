@@ -15,8 +15,6 @@ dependencies:
     - field.field.node.publication_page.field_show_related_content
     - field.field.node.publication_page.field_show_social_sharing
     - field.field.node.publication_page.field_show_table_of_content
-    - field.field.node.publication_page.scheduled_archiving
-    - field.field.node.publication_page.scheduled_publishing
     - node.type.publication_page
   module:
     - user
@@ -54,5 +52,3 @@ hidden:
   field_show_related_content: true
   field_show_social_sharing: true
   field_show_table_of_content: true
-  scheduled_archiving: true
-  scheduled_publishing: true

@@ -14,8 +14,6 @@ dependencies:
     - field.field.node.publication_page.field_show_related_content
     - field.field.node.publication_page.field_show_social_sharing
     - field.field.node.publication_page.field_show_table_of_content
-    - field.field.node.publication_page.scheduled_archiving
-    - field.field.node.publication_page.scheduled_publishing
     - node.type.publication_page
   module:
     - entity_hierarchy
@@ -153,5 +151,3 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  scheduled_archiving: true
-  scheduled_publishing: true

@@ -20,8 +20,6 @@ dependencies:
     - field.field.node.publication.field_show_table_of_content
     - field.field.node.publication.field_tags
     - field.field.node.publication.field_topic
-    - field.field.node.publication.scheduled_archiving
-    - field.field.node.publication.scheduled_publishing
     - node.type.publication
   module:
     - datetime
@@ -197,5 +195,3 @@ content:
     weight: 100
     region: content
 hidden:
-  scheduled_archiving: true
-  scheduled_publishing: true
