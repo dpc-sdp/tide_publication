@@ -18,7 +18,6 @@ dependencies:
     - paragraphs.paragraphs_type.card_promotion
     - paragraphs.paragraphs_type.card_promotion_auto
     - paragraphs.paragraphs_type.complex_image
-    - paragraphs.paragraphs_type.data_driven_component
     - paragraphs.paragraphs_type.latest_events
     - paragraphs.paragraphs_type.media_gallery
     - paragraphs.paragraphs_type.news_listing
@@ -59,7 +58,6 @@ settings:
       card_event_auto: card_event_auto
       latest_events: latest_events
       card_carousel: card_carousel
-      data_driven_component: data_driven_component
       timelines: timelines
     target_bundles_drag_drop:
       banner:
@@ -143,9 +141,6 @@ settings:
       call_to_action_image:
         weight: 35
         enabled: false
-      data_driven_component:
-        enabled: true
-        weight: 36
       phone:
         weight: 38
         enabled: false
