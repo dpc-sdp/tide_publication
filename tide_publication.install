@@ -6,6 +6,7 @@
  */
 
 use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Item\Field;
 use Drupal\workflows\Entity\Workflow;
 
@@ -133,4 +134,115 @@ function tide_publication_update_8002() {
     _tide_import_single_config('core.entity_view_display.node.publication.default', $config_location, TRUE);
     _tide_import_single_config('core.entity_form_display.node.publication.default', $config_location, TRUE);
   }
+}
+
+/**
+ * Change field_publication_authors from text field to taxonomy_term field.
+ */
+function tide_publication_update_8003() {
+  // Required variables.
+  $entity_type = 'node';
+  $field_name = 'field_publication_authors';
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  // Database contention.
+  $database = \Drupal::database();
+  // The tables need to be updated.
+  $tmp_table_names = [
+    'tmp_table' => 'node__field_publication_authors',
+    'tmp_revision_table' => 'node_revision__field_publication_authors',
+  ];
+  // field_publication_authors_target_id column specification.
+  $spec = [
+    'type' => 'int',
+    'length' => 10,
+    'unsigned' => TRUE,
+  ];
+  // Database manipulations.
+  foreach ($tmp_table_names as $tmp => $table_name) {
+    if ($database->schema()->tableExists($table_name)) {
+      // Creates two tmp tables.
+      $database->query("CREATE TABLE {$tmp} SELECT * FROM  {$table_name}");
+      $database->truncate($table_name)->execute();
+      // Adds field_publication_authors_target_id field for holding tids.
+      $database->schema()
+        ->addField($tmp, 'field_publication_authors_target_id', $spec);
+      // Gets tids.
+      $terms = $database->select($tmp, 't')
+        ->fields('t', ['field_publication_authors_value'])
+        ->execute()
+        ->fetchCol();
+      // Updates field_publication_authors_target_id with correct tid.
+      foreach ($terms as $term) {
+        $tids = \Drupal::entityQuery('taxonomy_term')
+          ->condition('name', $term)
+          ->execute();
+        if ($tids) {
+          $tid = (int) reset($tids);
+          $database->update($tmp)
+            ->fields(['field_publication_authors_target_id' => $tid])
+            ->condition('field_publication_authors_value', $term)
+            ->execute();
+        }
+      }
+      // Deletes rows that has no tid associated.
+      $database->delete($tmp)
+        ->condition('field_publication_authors_target_id', NULL, 'IS')
+        ->execute();
+      // Delete field_publication_authors_value column.
+      $database->schema()->dropField($tmp, 'field_publication_authors_value');
+
+      // Do some changes in field field tables.
+      $database->schema()
+        ->changeField($table_name, 'field_publication_authors_value', 'field_publication_authors_target_id', $spec);
+    }
+  }
+
+  // Update FieldStorageConfig.
+  $new_field_storage = $field_storage->toArray();
+  $new_field_storage['type'] = 'entity_reference';
+  $new_field_storage['dependencies'] = [
+    'module' => [
+      'node',
+      'taxonomy',
+    ],
+  ];
+  $new_field_storage['settings'] = ['target_type' => 'taxonomy_term'];
+  $new_field_storage['cardinality'] = 1;
+  $new_field_storage['module'] = 'core';
+  $new_field_storage = FieldStorageConfig::create($new_field_storage);
+  $new_field_storage->original = $new_field_storage;
+  $new_field_storage->enforceIsNew(FALSE);
+  $new_field_storage->save();
+
+  // Update field.
+  foreach ($field_storage->getBundles() as $bundle => $label) {
+    $field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+    $new_field = $field->toArray();
+    $new_field['field_type'] = 'entity_reference';
+    $new_field['dependencies'] = [
+      'config' => [
+        'field.storage.' . $field_storage->id(),
+        'node.type.' . $bundle,
+        'taxonomy.vocabulary.department',
+      ],
+    ];
+    $new_field['settings'] = [
+      'handler_settings' => [
+        'target_bundles' => [
+          'department' => 'department',
+        ],
+      ],
+    ];
+    $new_field = FieldConfig::create($new_field);
+    $new_field->original = $field;
+    $new_field->enforceIsNew(FALSE);
+    $new_field->save();
+  }
+  // Data migration.
+  foreach ($tmp_table_names as $tmp => $table_name) {
+    $database->insert($table_name)->from($database->select($tmp, 't')
+      ->fields('t'))->execute();
+    $database->schema()->dropTable($tmp);
+  }
+  drupal_flush_all_caches();
 }

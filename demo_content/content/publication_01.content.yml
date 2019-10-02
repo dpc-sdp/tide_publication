@@ -30,9 +30,12 @@
   field_landing_page_intro_text: Nulla ultricies dignissim leo, posuere vestibulum erat cursus vitae
   field_landing_page_summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tincidunt sit amet ligula sit amet lacinia. In a leo nec tortor aliquet faucibus.
   field_publication_authors:
-    - value: Lorem ipsum dolor sit amet
-    - value: Nulla ultricies dignissim
-    - value: Integer interdum nisl
+    - '#process':
+        callback: reference
+        args:
+          - taxonomy_term
+          - vid: department
+            name: 'Demo Department'
   # Content Components.
   field_show_table_of_content: 1
   field_landing_page_component:
