@@ -246,3 +246,23 @@ function tide_publication_update_8003() {
   }
   drupal_flush_all_caches();
 }
+
+/**
+ * Enable path enhancer.
+ */
+function tide_publication_update_8004() {
+  $moduleHandler = \Drupal::service('module_handler');
+  if ($moduleHandler->moduleExists('jsonapi') && $moduleHandler->moduleExists('jsonapi_extras')) {
+    $config_factory = \Drupal::configFactory();
+    $configs = [
+      'jsonapi_extras.jsonapi_resource_config.node--publication',
+      'jsonapi_extras.jsonapi_resource_config.node--publication_page',
+    ];
+    foreach ($configs as $config) {
+      $jsonapi_settings = $config_factory->getEditable($config);
+      $resource_fields = $jsonapi_settings->get('resourceFields');
+      $resource_fields['path']['enhancer']['id'] = 'path_enhancer';
+      $jsonapi_settings->set('resourceFields', $resource_fields)->save(TRUE);
+    }
+  }
+}
