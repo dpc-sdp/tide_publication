@@ -5,6 +5,7 @@ package: Tide
 core: 8.x
 dependencies:
   - dpc-sdp:tide_landing_page
+  - dpc-sdp:tide_media
   - entity_hierarchy:entity_hierarchy
 config_devel:
   install:
