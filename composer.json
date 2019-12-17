@@ -5,7 +5,7 @@
   "license": "GPL-2.0-or-later",
   "require": {
     "dpc-sdp/tide_core": "dev-feature/SDPA-2794_migrate_sdp-dpc_modules as 1.5.2",
-    "dpc-sdp/tide_landing_page": "dev-feature/SDPA-2794_config_dep_debug",
+    "dpc-sdp/tide_landing_page": "^1.1.11",
     "drupal/entity_hierarchy": "~2.0"
   },
   "repositories": {
