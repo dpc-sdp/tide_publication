@@ -1,4 +1,3 @@
-# @TODO remove @skipped once the module is extracted to its own repo.
 Feature: Access to Publication content type
 
   Ensure that Publication content access permissions are set correctly
