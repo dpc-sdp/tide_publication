@@ -1,4 +1,4 @@
-@tide @wip
+@tide
 Feature: Fields for Publication content type
 
   Ensure that Publication content has the expected fields.

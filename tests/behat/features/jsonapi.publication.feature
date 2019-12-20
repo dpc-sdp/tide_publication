@@ -1,4 +1,4 @@
-@tide @jsonapi @suggest @skipped
+@tide @jsonapi @suggest @wip
 Feature: JSON API Publication
 
   Ensure that the Publication nodes are exposed via JSON API.
