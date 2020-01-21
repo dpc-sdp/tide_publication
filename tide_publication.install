@@ -266,3 +266,13 @@ function tide_publication_update_8004() {
     }
   }
 }
+
+/**
+ * Updating field_publication_authors to give option to add multiple authors.
+ */
+function tide_publication_update_8005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('field.storage.node.field_publication_authors');
+  $config->set('cardinality', -1);
+  $config->save();
+}
