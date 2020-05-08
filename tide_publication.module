@@ -211,17 +211,23 @@ function tide_publication_tide_entity_reference_site_enhancer_transform_alter(&$
  * Implements hook_form_alter().
  */
 function tide_publication_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (Drupal::routeMatch()->getRouteName() == 'entity.node.entity_hierarchy_reorder' && $current_node = Drupal::routeMatch()->getParameter('node')) {
-    /** @var \Drupal\Core\Url $url */
-    $url = $form['actions']['add_child']['#url'];
-    $opt = $url->getOptions();
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.node.entity_hierarchy_reorder' && $current_node = \Drupal::routeMatch()->getParameter('node')) {
     $destination = ['destination' => "/node/{$current_node->id()}/children"];
-    $opt['query'] = $opt['query'] + $destination;
-    $url->setOptions($opt);
+    // Updates the destination of 'Create new Publication page' link
+    // under /node/{node_id}/children page.
+    if (isset($form['actions']['add_child']['#url']) && $form['actions']['add_child']['#url'] instanceof Url) {
+      $form['actions']['add_child']['#url']->setOption('query', $destination);
+    }
     array_walk($form['children'], function ($item, $index) use ($destination) {
-      if (is_numeric($index) && $item['operations']['#links']['edit']['url'] instanceof Url) {
-        $item['operations']['#links']['edit']['url']->setOption('query', $destination);
-        $item['operations']['#links']['delete']['url']->setOption('query', $destination);
+      if (is_numeric($index)) {
+        // Updates the destination of the 'edit' link.
+        if (isset($item['operations']['#links']['edit']['url']) && $item['operations']['#links']['edit']['url'] instanceof Url) {
+          $item['operations']['#links']['edit']['url']->setOption('query', $destination);
+        }
+        // Updates the destination of the 'delete' link.
+        if (isset($item['operations']['#links']['delete']['url']) && $item['operations']['#links']['delete']['url'] instanceof Url) {
+          $item['operations']['#links']['delete']['url']->setOption('query', $destination);
+        }
       }
     });
   }
