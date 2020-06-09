@@ -30,6 +30,22 @@ function tide_publication_install() {
     }
   }
 
+  // Add re-order children permission for roles.
+  if (\Drupal::moduleHandler()->moduleExists('entity_hierarchy')) {
+    $roles = [
+      'approver',
+      'editor',
+      'site_admin',
+    ];
+    foreach ($roles as $role) {
+      $load_role = Role::load($role);
+      if ($load_role) {
+        $role->grantPermission('reorder entity_hierarchy children');
+        $role->save();
+      }
+    }
+  }
+
   _tide_publication_update_search_api_index();
 }
 
@@ -280,7 +296,7 @@ function tide_publication_update_8005() {
 /**
  * Add re-order children permission for roles.
  */
-function tide_core_update_8006() {
+function tide_publication_update_8006() {
   if (\Drupal::moduleHandler()->moduleExists('entity_hierarchy')) {
     $roles = [
       'approver',
