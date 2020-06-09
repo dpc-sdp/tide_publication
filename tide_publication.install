@@ -38,9 +38,9 @@ function tide_publication_install() {
       'editor',
       'site_admin',
     ];
-    foreach ($roles as $role) {
-      $load_role = Role::load($role);
-      if ($load_role) {
+    foreach ($roles as $role_name) {
+      $role = Role::load($role_name);
+      if ($role) {
         $role->grantPermission('reorder entity_hierarchy children');
         $role->save();
       }
@@ -304,9 +304,9 @@ function tide_publication_update_8006() {
       'editor',
       'site_admin',
     ];
-    foreach ($roles as $role) {
-      $load_role = Role::load($role);
-      if ($load_role) {
+    foreach ($roles as $role_name) {
+      $role = Role::load($role_name);
+      if ($role) {
         $role->grantPermission('reorder entity_hierarchy children');
         $role->save();
       }
