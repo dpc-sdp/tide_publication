@@ -276,3 +276,23 @@ function tide_publication_update_8005() {
   $config->set('cardinality', -1);
   $config->save();
 }
+
+/**
+ * Add re-order children permission for roles.
+ */
+function tide_core_update_8006() {
+  if (\Drupal::moduleHandler()->moduleExists('entity_hierarchy')) {
+    $roles = [
+      'approver',
+      'editor',
+      'site_admin',
+    ];
+    foreach ($roles as $role) {
+      $load_role = Role::load($role);
+      if ($load_role) {
+        $role->grantPermission('reorder entity_hierarchy children');
+        $role->save();
+      }
+    }
+  }
+}
