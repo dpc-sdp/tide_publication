@@ -48,6 +48,37 @@ function tide_publication_install() {
   }
 
   _tide_publication_update_search_api_index();
+
+  // Enable entity type/bundles for use with scheduled transitions.
+  if (\Drupal::moduleHandler()->moduleExists('scheduled_transitions')) {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('scheduled_transitions.settings');
+    $bundles = $config->get('bundles');
+    if ($bundles) {
+      foreach ($bundles as $bundle) {
+        $enabled_bundles[] = $bundle['bundle'];
+      }
+      if (!in_array('publication', $enabled_bundles)) {
+        $bundles[] = ['entity_type' => 'node', 'bundle' => 'publication'];
+        $config->set('bundles', $bundles)->save();
+      }
+      if (!in_array('publication_page', $enabled_bundles)) {
+        $bundles[] = ['entity_type' => 'node', 'bundle' => 'publication_page'];
+        $config->set('bundles', $bundles)->save();
+      }
+    }
+    else {
+      $publication_bundles = [
+        'publication',
+        'publication_page',
+      ];
+      foreach ($publication_bundles as $bundle) {
+        $bundles[] = ['entity_type' => 'node', 'bundle' => $bundle];
+        $config->set('bundles', $bundles);
+      }
+      $config->save();
+    }
+  }
 }
 
 /**
