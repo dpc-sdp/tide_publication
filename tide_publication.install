@@ -379,3 +379,24 @@ function tide_publication_update_8007() {
     }
   }
 }
+
+/**
+ * Widget change.
+ *
+ * Changes the field_publication_authors widget to
+ * entity_reference_autocomplete_tags type.
+ */
+function tide_publication_update_8008() {
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $entity_form_display */
+  $entity_form_display = \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load('node.publication.default');
+  if ($entity_form_display) {
+    $settings = $entity_form_display->getComponent('field_publication_authors');
+    if (isset($settings['type']) && $settings['type'] != 'entity_reference_autocomplete') {
+      $settings['type'] = 'entity_reference_autocomplete';
+      $entity_form_display->setComponent('field_publication_authors', $settings);
+      $entity_form_display->save();
+    }
+  }
+}
