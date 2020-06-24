@@ -28,7 +28,7 @@ function tide_publication_entity_bundle_create($entity_type_id, $bundle) {
   if ($entity_type_id == 'node' && in_array($bundle, ['publication', 'publication_page'])) {
     // Grant permissions on Publication and Publication Page content types to
     // Approver and Editor.
-    $roles = ['approver', 'editor'];
+    $roles = ['approver', 'editor', 'site_admin'];
     $permissions = [
       'create publication content',
       'delete any publication content',
