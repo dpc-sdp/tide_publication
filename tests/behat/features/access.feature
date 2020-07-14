@@ -13,6 +13,7 @@ Feature: Access to Publication content type
       | role               | response |
       | authenticated user | 404      |
       | administrator      | 200      |
+      | site_admin         | 200      |
       | editor             | 200      |
       | approver           | 200      |
       | previewer          | 404      |
@@ -27,6 +28,7 @@ Feature: Access to Publication content type
       | role               | response |
       | authenticated user | 404      |
       | administrator      | 200      |
+      | site_admin         | 200      |
       | editor             | 200      |
       | approver           | 200      |
       | previewer          | 404      |
