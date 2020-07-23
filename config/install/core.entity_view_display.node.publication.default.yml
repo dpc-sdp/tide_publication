@@ -60,7 +60,7 @@ content:
     third_party_settings: {  }
     region: content
   field_landing_page_intro_text:
-    weight: 2
+    weight: -19
     label: above
     settings: {  }
     third_party_settings: {  }
