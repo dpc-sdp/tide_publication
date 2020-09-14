@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.publication.field_landing_page_show_contact
     - field.field.node.publication.field_landing_page_summary
     - field.field.node.publication.field_license_type
+    - field.field.node.publication.field_node_display_headings
     - field.field.node.publication.field_node_documents
     - field.field.node.publication.field_publication_authors
     - field.field.node.publication.field_publication_date
@@ -69,6 +70,7 @@ third_party_settings:
     group_body_content:
       children:
         - field_show_table_of_content
+        - field_node_display_headings
         - field_landing_page_component
         - field_node_documents
       parent_name: group_section_1
@@ -244,6 +246,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_node_display_headings:
+    weight: 24
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_node_documents:
     weight: 25
