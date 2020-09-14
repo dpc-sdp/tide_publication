@@ -406,7 +406,7 @@ function tide_publication_update_8008() {
  */
 function tide_publication_update_8009() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_page') . '/config/install'];
+  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
   $new_fields = [
     'field.field.node.publication_page.field_node_display_headings',
     'field.field.node.publication.field_node_display_headings',
