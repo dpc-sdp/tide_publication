@@ -151,6 +151,7 @@ function _tide_publication_update_search_api_index() {
  */
 function tide_publication_update_dependencies() {
   $dependencies['tide_publication'][8001] = ['tide_landing_page' => 8008];
+  $dependencies['tide_publication'][8009] = ['tide_core' => 8036];
 
   return $dependencies;
 }
@@ -459,6 +460,9 @@ function tide_publication_update_8009() {
       ];
       $config->set('content', $content);
     }
+    // Increase weight to sit below the new field.
+    $landing_page_component = $config->get('content.field_landing_page_component.weight');
+    $config->set('content.field_landing_page_component.weight', $landing_page_component + 1);
     $config->save();
   }
   // Add Json.

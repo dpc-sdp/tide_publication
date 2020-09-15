@@ -185,7 +185,7 @@ content:
     region: content
   field_landing_page_component:
     type: paragraphs
-    weight: 24
+    weight: 25
     region: content
     settings:
       title: Component
