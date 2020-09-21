@@ -151,6 +151,7 @@ function _tide_publication_update_search_api_index() {
  */
 function tide_publication_update_dependencies() {
   $dependencies['tide_publication'][8001] = ['tide_landing_page' => 8008];
+  $dependencies['tide_publication'][8009] = ['tide_core' => 8037];
 
   return $dependencies;
 }
@@ -398,5 +399,102 @@ function tide_publication_update_8008() {
       $entity_form_display->setComponent('field_publication_authors', $settings);
       $entity_form_display->save();
     }
+  }
+}
+
+/**
+ * Add field display headings for table of contents.
+ */
+function tide_publication_update_8009() {
+  module_load_include('inc', 'tide_core', 'includes/helpers');
+  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
+  $new_fields = [
+    'field.field.node.publication_page.field_node_display_headings',
+    'field.field.node.publication.field_node_display_headings',
+  ];
+  foreach ($new_fields as $new_field) {
+    $config_read = _tide_read_config($new_field, $config_location, TRUE);
+    // Obtain the storage manager for field instances.
+    // Create a new field instance from the yaml configuration and save.
+    \Drupal::entityManager()->getStorage('field_config')
+      ->create($config_read)
+      ->save();
+  }
+  $config_factory = \Drupal::configFactory();
+  // Add to form display.
+  $new_displayss = [
+    'core.entity_form_display.node.publication_page.default' => 'field.field.node.publication_page.field_node_display_headings',
+    'core.entity_form_display.node.publication.default' => 'field.field.node.publication.field_node_display_headings',
+  ];
+  foreach ($new_displayss as $display => $field) {
+    $config = $config_factory->getEditable($display);
+
+    $dependencies = $config->get('dependencies.config');
+    if (!in_array($field, $dependencies)) {
+      $dependencies[] = $field;
+      $config->set('dependencies.config', $dependencies);
+    }
+    $group_body_content = 'third_party_settings.field_group.group_body_content.children';
+    $third_party_settings = $config->get($group_body_content);
+    if (!isset($third_party_settings['field_node_display_headings'])) {
+      $third_party_settings = [
+        'field_show_table_of_content',
+        'field_node_display_headings',
+        'field_landing_page_component',
+      ];
+      $config->set($group_body_content, $third_party_settings);
+      if ($display == 'core.entity_form_display.node.publication.default') {
+        $third_party_settings[] = 'field_node_documents';
+        $config->set($group_body_content, $third_party_settings);
+      }
+    }
+    $table_of_content_weight = $config->get('content.field_show_table_of_content.weight');
+    $content = $config->get('content');
+    if (!isset($content['field_node_display_headings'])) {
+      $content['field_node_display_headings'] = [
+        'weight' => $table_of_content_weight + 1,
+        'settings' => [],
+        'third_party_settings' => [],
+        'type' => 'options_buttons',
+        'region' => 'content',
+      ];
+      $config->set('content', $content);
+    }
+    // Increase weight to sit below the new field.
+    $landing_page_component = $config->get('content.field_landing_page_component.weight');
+    $config->set('content.field_landing_page_component.weight', $landing_page_component + 1);
+    $config->save();
+  }
+  // Add Json.
+  $json_feilds = [
+    'jsonapi_extras.jsonapi_resource_config.node--publication_page',
+    'jsonapi_extras.jsonapi_resource_config.node--publication',
+  ];
+  foreach ($json_feilds as $field) {
+    $json_config = $config_factory->getEditable($field);
+    $json_content = $json_config->get('resourceFields');
+    if (!isset($json_content['field_node_display_headings'])) {
+      $json_content['field_node_display_headings'] = [
+        'fieldName' => 'field_node_display_headings',
+        'publicName' => 'field_node_display_headings',
+        'enhancer' => [
+          'id' => '',
+        ],
+        'disabled' => FALSE,
+      ];
+      $json_config->set('resourceFields', $json_content);
+    }
+    $json_config->save();
+  }
+  // Update show table of content label.
+  $fields = [
+    'field.field.node.publication_page.field_show_table_of_content',
+    'field.field.node.publication.field_show_table_of_content',
+  ];
+  foreach ($fields as $field) {
+    $field_config = $config_factory->getEditable($field);
+    $description = 'The table of contents is automatically built from the heading structure of your page.';
+    $field_config->set('description', $description);
+    $field_config->save();
   }
 }
