@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.publication_page.field_landing_page_intro_text
     - field.field.node.publication_page.field_landing_page_show_contact
     - field.field.node.publication_page.field_landing_page_summary
+    - field.field.node.publication_page.field_node_display_headings
     - field.field.node.publication_page.field_publication
     - field.field.node.publication_page.field_related_links
     - field.field.node.publication_page.field_show_content_rating
@@ -131,6 +132,7 @@ third_party_settings:
     group_body_content:
       children:
         - field_show_table_of_content
+        - field_node_display_headings
         - field_landing_page_component
       parent_name: group_section_1
       weight: 3
@@ -156,7 +158,7 @@ content:
     third_party_settings: {  }
   field_landing_page_component:
     type: paragraphs
-    weight: 24
+    weight: 25
     region: content
     settings:
       title: Component
@@ -211,6 +213,12 @@ content:
         maxlength_js_enforce: false
         maxlength_js_truncate_html: false
     type: string_textarea
+    region: content
+  field_node_display_headings:
+    weight: 24
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_publication:
     weight: 7

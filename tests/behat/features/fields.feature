@@ -1,4 +1,4 @@
-@tide
+@tide @test-me
 Feature: Fields for Publication content type
 
   Ensure that Publication content has the expected fields.
@@ -38,6 +38,11 @@ Feature: Fields for Publication content type
     Then I press "Documents"
     Then I should see an "#edit-field-node-documents" element
     And I should see an "input#edit-field-node-documents-entity-browser-entity-browser-open-modal" element
+
+    When I check "edit-field-show-table-of-content-value"
+    Then I should see text matching "Display headings"
+    And I should see an "input#edit-field-node-display-headings-showh2" element
+    And I should see an "input#edit-field-node-display-headings-showh2andh3" element
 
     And I see field "Show Publication Navigation?"
     And I should see an "input#edit-field-show-publication-nav-value" element
@@ -117,6 +122,11 @@ Feature: Fields for Publication content type
     And I should see an "input#edit-field-show-table-of-content-value" element
     And I should not see an "input#edit-field-show-table-of-content.required" element
 
+    When I check "edit-field-show-table-of-content-value"
+    Then I should see text matching "Display headings"
+    And I should see an "input#edit-field-node-display-headings-showh2" element
+    And I should see an "input#edit-field-node-display-headings-showh2andh3" element
+
     And I should see text matching "Content components"
     And I should see "Basic Text" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Accordion" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
@@ -130,7 +140,7 @@ Feature: Fields for Publication content type
     And I should see "Key dates" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Timelines" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Complex Image" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Embedded Webform" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
+    And I should see "Form embed (Drupal)" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Featured news" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
 
     And I see field "Show Content Rating?"
