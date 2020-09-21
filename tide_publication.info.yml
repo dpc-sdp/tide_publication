@@ -26,6 +26,7 @@ config_devel:
     - field.field.node.publication.field_landing_page_intro_text
     - field.field.node.publication.field_landing_page_show_contact
     - field.field.node.publication.field_landing_page_summary
+    - field.field.node.publication_page.field_node_display_headings
     - field.field.node.publication.field_license_type
     - field.field.node.publication.field_node_documents
     - field.field.node.publication.field_publication_authors
