@@ -533,7 +533,7 @@ function tide_publication_update_8010() {
       ->load($display);
     $hero_image_wight = ($display == 'node.publication_page.default') ? 9 : 4;
     $hero_theme_wight = ($display == 'node.publication_page.default') ? 10 : 4;
-    $hero_caption_wight = ($display == 'node.publication_page.default') ? 15 :17;
+    $hero_caption_wight = ($display == 'node.publication_page.default') ? 15 : 17;
     if ($entity_form_display) {
       $entity_form_display->setComponent('field_landing_page_hero_image', [
         'weight' => $hero_image_wight,
