@@ -498,3 +498,140 @@ function tide_publication_update_8009() {
     $field_config->save();
   }
 }
+
+/**
+ * Add hero image fields.
+ */
+function tide_publication_update_8010() {
+  module_load_include('inc', 'tide_core', 'includes/helpers');
+  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
+  $new_fields = [
+    'field.field.node.publication_page.field_landing_page_hero_image',
+    'field.field.node.publication_page.field_landing_page_hero_theme',
+    'field.field.node.publication_page.field_show_hero_image_caption',
+    'field.field.node.publication.field_landing_page_hero_image',
+    'field.field.node.publication.field_landing_page_hero_theme',
+    'field.field.node.publication.field_show_hero_image_caption',
+  ];
+  foreach ($new_fields as $new_field) {
+    $config_read = _tide_read_config($new_field, $config_location, TRUE);
+    // Obtain the storage manager for field instances.
+    // Create a new field instance from the yaml configuration and save.
+    \Drupal::entityManager()->getStorage('field_config')
+      ->create($config_read)
+      ->save();
+  }
+  // Add to form display.
+  $displays = [
+    'node.publication_page.default',
+    'node.publication.default',
+  ];
+  foreach ($displays as $display) {
+    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $entity_form_display */
+    $entity_form_display = Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load($display);
+    $hero_image_wight = ($display == 'node.publication_page.default') ? 9 : 4;
+    $hero_theme_wight = ($display == 'node.publication_page.default') ? 10 : 5;
+    $hero_caption_wight = ($display == 'node.publication_page.default') ? 15 :17;
+    if ($entity_form_display) {
+      $entity_form_display->setComponent('field_landing_page_hero_image', [
+        'weight' => $hero_image_wight,
+        'settings' => [
+          'entity_browser' => 'tide_image_browser',
+          'field_widget_display' => 'rendered_entity',
+          'field_widget_display_settings' => [
+            'view_mode' => 'default'
+          ],
+          'field_widget_edit' => TRUE,
+          'field_widget_remove' => TRUE,
+          'selection_mode' => 'selection_append',
+          'field_widget_replace' => FALSE,
+          'open' => FALSE,
+        ],
+        'third_party_settings' => [],
+        'type' => 'entity_browser_entity_reference',
+        'region' => 'content',
+      ]);
+      $entity_form_display->setComponent('field_landing_page_hero_theme', [
+        'weight' => $hero_theme_wight,
+        'settings' => [],
+        'third_party_settings' => [],
+        'type' => 'options_select',
+        'region' => 'content',
+      ]);
+      $entity_form_display->setComponent('field_show_hero_image_caption', [
+        'weight' => $hero_caption_wight,
+        'settings' => [
+          'display_label' => TRUE
+        ],
+        'third_party_settings' => [],
+        'type' => 'boolean_checkbox',
+        'region' => 'content',
+      ]);
+
+      // Set Field group.
+      $field_group = $entity_form_display->getThirdPartySettings('field_group');
+      if (!empty($field_group['group_page_header']['children'])) {
+        if (!in_array('field_landing_page_hero_image', $field_group['group_page_header']['children'])) {
+          $field_group['group_page_header']['children'][] = 'field_landing_page_hero_image';
+          $entity_form_display->setThirdPartySetting('field_group', 'group_page_header', $field_group['group_page_header']);
+        }
+        if (!in_array('field_landing_page_hero_theme', $field_group['group_page_header']['children'])) {
+          $field_group['group_page_header']['children'][] = 'field_landing_page_hero_theme';
+          $entity_form_display->setThirdPartySetting('field_group', 'group_page_header', $field_group['group_page_header']);
+        }
+      }
+      $entity_form_display->save();
+    }
+    // Update view_displays.
+    $entity_view_display = \Drupal::entityTypeManager()
+    ->getStorage('entity_view_display')
+    ->load($display);
+    if ($entity_view_display) {
+      $entity_view_display->setComponent('field_landing_page_hero_image', [
+        'weight' => 122,
+        'label' => 'above',
+        'settings' => [
+          'link' => TRUE
+        ],
+        'third_party_settings' => [],
+        'type' => 'entity_reference_label',
+        'region' => 'content',
+      ]);
+      $entity_view_display->setComponent('field_landing_page_hero_theme', [
+        'weight' => 123,
+        'label' => 'above',
+        'settings' => [],
+        'third_party_settings' => [],
+        'type' => 'list_default',
+        'region' => 'content',
+      ]);
+      $entity_view_display->setComponent('field_show_hero_image_caption', [
+        'weight' => 121,
+        'label' => 'above',
+        'settings' => [
+          'format' => 'default',
+          'format_custom_false' => '',
+          'format_custom_true' => '',
+        ],
+        'third_party_settings' => [],
+        'type' => 'boolean',
+        'region' => 'content',
+      ]);
+      $entity_view_display->save();
+    }
+  }
+  $json_file_name = [
+    'node--publication_page',
+    'node--publication',
+  ];
+  foreach ($json_file_name as $file_name) {
+    // Add paragraph type to JSON.
+    $json_field = 'jsonapi_extras.jsonapi_resource_config.' . $file_name;
+    $config_location = [drupal_get_path('module', 'tide_publication') . '/config/optional'];
+    $config_storage = \Drupal::service('config.storage');
+    $config_read = _tide_read_config($json_field, $config_location, TRUE);
+    $config_storage->write($json_field, $config_read);
+  }
+}

@@ -168,6 +168,18 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
+  field_landing_page_hero_image:
+    fieldName: field_landing_page_hero_image
+    publicName: field_landing_page_hero_image
+    enhancer:
+      id: ''
+    disabled: false
+  field_landing_page_hero_theme:
+    fieldName: field_landing_page_hero_theme
+    publicName: field_landing_page_hero_theme
+    enhancer:
+      id: ''
+    disabled: false
   field_landing_page_intro_text:
     fieldName: field_landing_page_intro_text
     publicName: field_landing_page_intro_text
@@ -227,6 +239,12 @@ resourceFields:
   field_show_content_rating:
     fieldName: field_show_content_rating
     publicName: field_show_content_rating
+    enhancer:
+      id: ''
+    disabled: false
+  field_show_hero_image_caption:
+    fieldName: field_show_hero_image_caption
+    publicName: field_show_hero_image_caption
     enhancer:
       id: ''
     disabled: false
