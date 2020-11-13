@@ -508,10 +508,8 @@ function tide_publication_update_8010() {
   $new_fields = [
     'field.field.node.publication_page.field_landing_page_hero_image',
     'field.field.node.publication_page.field_landing_page_hero_theme',
-    'field.field.node.publication_page.field_show_hero_image_caption',
     'field.field.node.publication.field_landing_page_hero_image',
     'field.field.node.publication.field_landing_page_hero_theme',
-    'field.field.node.publication.field_show_hero_image_caption',
   ];
   foreach ($new_fields as $new_field) {
     $config_read = _tide_read_config($new_field, $config_location, TRUE);
@@ -533,7 +531,6 @@ function tide_publication_update_8010() {
       ->load($display);
     $hero_image_wight = ($display == 'node.publication_page.default') ? 9 : 4;
     $hero_theme_wight = ($display == 'node.publication_page.default') ? 10 : 4;
-    $hero_caption_wight = ($display == 'node.publication_page.default') ? 15 : 17;
     if ($entity_form_display) {
       $entity_form_display->setComponent('field_landing_page_hero_image', [
         'weight' => $hero_image_wight,
@@ -558,15 +555,6 @@ function tide_publication_update_8010() {
         'settings' => [],
         'third_party_settings' => [],
         'type' => 'options_select',
-        'region' => 'content',
-      ]);
-      $entity_form_display->setComponent('field_show_hero_image_caption', [
-        'weight' => $hero_caption_wight,
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'third_party_settings' => [],
-        'type' => 'boolean_checkbox',
         'region' => 'content',
       ]);
 
@@ -617,18 +605,6 @@ function tide_publication_update_8010() {
         'settings' => [],
         'third_party_settings' => [],
         'type' => 'list_default',
-        'region' => 'content',
-      ]);
-      $entity_view_display->setComponent('field_show_hero_image_caption', [
-        'weight' => 121,
-        'label' => 'above',
-        'settings' => [
-          'format' => 'default',
-          'format_custom_false' => '',
-          'format_custom_true' => '',
-        ],
-        'third_party_settings' => [],
-        'type' => 'boolean',
         'region' => 'content',
       ]);
       $entity_view_display->save();

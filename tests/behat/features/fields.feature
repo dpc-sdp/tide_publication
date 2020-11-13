@@ -13,7 +13,6 @@ Feature: Fields for Publication content type
 
     And the "#edit-field-landing-page-hero-image" element should contain "Hero image"
     And I should see a "input#edit-field-landing-page-hero-image-target-id" element
-    And I should see a "#edit-field-show-hero-image-caption-value" element
     And I should see a "select#edit-field-landing-page-hero-theme" element
 
     And I should see an "input#edit-field-publication-date-0-value-date" element
@@ -95,7 +94,6 @@ Feature: Fields for Publication content type
 
     And the "#edit-field-landing-page-hero-image" element should contain "Hero image"
     And I should see a "input#edit-field-landing-page-hero-image-target-id" element
-    And I should see a "#edit-field-show-hero-image-caption-value" element
     And I should see a "select#edit-field-landing-page-hero-theme" element
 
     And I see field "Introduction Text"
