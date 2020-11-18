@@ -11,6 +11,10 @@ Feature: Fields for Publication content type
     Then I see field "Title"
     And I should see an "input#edit-title-0-value.required" element
 
+    And the "#edit-field-landing-page-hero-image" element should contain "Hero image"
+    And I should see a "input#edit-field-landing-page-hero-image-target-id" element
+    And I should see a "select#edit-field-landing-page-hero-theme" element
+
     And I should see an "input#edit-field-publication-date-0-value-date" element
 
     And I should see "License Type" in the "label[for=edit-field-license-type]" element
@@ -87,6 +91,10 @@ Feature: Fields for Publication content type
 
     Then I see field "Title"
     And I should see an "input#edit-title-0-value.required" element
+
+    And the "#edit-field-landing-page-hero-image" element should contain "Hero image"
+    And I should see a "input#edit-field-landing-page-hero-image-target-id" element
+    And I should see a "select#edit-field-landing-page-hero-theme" element
 
     And I see field "Introduction Text"
     And I should see an "textarea#edit-field-landing-page-intro-text-0-value" element
