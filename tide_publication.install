@@ -627,7 +627,7 @@ function tide_publication_update_8010() {
 /**
  * Updates field settings with new card.
  */
-function tide_publication_update_8011(){
+function tide_publication_update_8011() {
   $config = \Drupal::configFactory()
     ->getEditable('field.field.node.publication_page.field_landing_page_component');
   $settings = $config->get('settings');
