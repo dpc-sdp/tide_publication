@@ -18,5 +18,17 @@
     }
   },
   "minimum-stability": "alpha",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "extra": {
+    "enable-patching": true,
+    "composer-exit-on-patch-failure": true,
+    "patches": {
+      "dpc-sdp/tide_core": {
+        "Moved Topic and Tags field to node form sidebar - https://github.com/dpc-sdp/tide_core/pull/213": "https://github.com/dpc-sdp/tide_core/pull/213.diff"
+      },
+      "dpc-sdp/tide_landing_page": {
+        "Updated UI of Landing page node form - https://github.com/dpc-sdp/tide_landing_page/pull/124": "https://github.com/dpc-sdp/tide_landing_page/pull/124.diff"
+      }
+    }
+  }
 }

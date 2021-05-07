@@ -10,7 +10,7 @@ field_name: field_featured_image
 entity_type: node
 bundle: publication
 label: 'Featured Image'
-description: ''
+description: 'Feature images don''t display on this page. They display in featured card or navigation links to this page. Must be 496px high x 818px wide.'
 required: false
 translatable: true
 default_value: {  }
