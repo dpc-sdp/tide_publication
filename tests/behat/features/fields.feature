@@ -139,12 +139,8 @@ Feature: Fields for Publication content type
     And I should see "Basic Text" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Accordion" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Call to Action" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Card Event" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Promotion" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Navigation featured" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Navigation featured Automated" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Navigation" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Navigation Automated" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
+    And I should see "Promotion card" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
+    And I should see "Navigation card" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Key dates" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Timelines" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Complex Image" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
