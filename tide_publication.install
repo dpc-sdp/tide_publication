@@ -756,6 +756,7 @@ function tide_publication_update_8011() {
       'weight' => 40,
     ],
     // General.
+    'field_topic' => ['weight' => 0],
     'field_show_content_rating' => ['weight' => 2],
   ];
 
