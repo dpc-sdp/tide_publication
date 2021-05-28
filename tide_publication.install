@@ -623,3 +623,44 @@ function tide_publication_update_8010() {
     $config_storage->write($json_field, $config_read);
   }
 }
+
+/**
+ * Updates field settings with new card.
+ */
+function tide_publication_update_8011() {
+  $config = \Drupal::configFactory()
+    ->getEditable('field.field.node.publication_page.field_landing_page_component');
+  $settings = $config->get('settings');
+  $old_cards = [
+    'card_promotion',
+    'card_promotion_auto',
+    'card_event',
+    'card_event_auto',
+    'card_navigation',
+    'card_navigation_auto',
+    'card_navigation_featured',
+    'card_navigation_featured_auto',
+  ];
+  foreach ($old_cards as $item) {
+    if (isset($settings['handler_settings']['target_bundles'][$item])) {
+      unset($settings['handler_settings']['target_bundles'][$item]);
+    }
+    if (isset($settings['handler_settings']['target_bundles_drag_drop'][$item])) {
+      unset($settings['handler_settings']['target_bundles_drag_drop'][$item]);
+    }
+  }
+  $new_cards = [
+    'navigation_card' => -28,
+    'promotion_card' => -29,
+  ];
+  foreach ($new_cards as $item => $weight) {
+    if (!isset($settings['handler_settings']['target_bundles'][$item])) {
+      $settings['handler_settings']['target_bundles'][$item] = $item;
+    }
+    if (!isset($settings['handler_settings']['target_bundles_drag_drop'][$item])) {
+      $settings['handler_settings']['target_bundles_drag_drop'][$item]['enabled'] = TRUE;
+      $settings['handler_settings']['target_bundles_drag_drop'][$item]['weight'] = $weight;
+    }
+  }
+  $config->set('settings', $settings)->save();
+}
