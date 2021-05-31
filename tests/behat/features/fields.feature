@@ -145,7 +145,6 @@ Feature: Fields for Publication content type
     And I should see "Timelines" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Complex Image" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
     And I should see "Form embed (Drupal)" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Featured news" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
 
     And I see field "Show Content Rating?"
     And I should see an "input#edit-field-show-content-rating-value" element
