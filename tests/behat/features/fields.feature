@@ -146,6 +146,10 @@ Feature: Fields for Publication content type
     And I should see the button "Key dates"
     And I should see the button "Image gallery"
     And I should see the button "Complex image"
+    And I should see the button "Featured news"
+    And I should see the button "Form embed (Drupal)"
+    And I should see the button "Timelines"
+    And I should see the button "News listing"
     And I press the "Close" button
 
     And I scroll selector "#edit-group-sidebar" into view
@@ -173,18 +177,6 @@ Feature: Fields for Publication content type
 
     And I should see text matching "Social sharing"
 
-    And I should see text matching "Content components"
-    And I should see "Basic Text" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Accordion" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Call to Action" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Promotion card" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Navigation card" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Key dates" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Timelines" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Complex Image" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Form embed (Drupal)" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-    And I should see "Featured news" in the "select[name='field_landing_page_component[add_more][add_more_select]']" element
-
-    And I see field "Show Content Rating?"
+    And I see field "Show content rating?"
     And I should see an "input#edit-field-show-content-rating-value" element
     And I should not see an "input#edit-field-show-content-rating-value.required" element
