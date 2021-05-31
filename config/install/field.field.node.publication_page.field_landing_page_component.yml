@@ -41,7 +41,6 @@ settings:
       call_to_action: call_to_action
       complex_image: complex_image
       embedded_webform: embedded_webform
-      featured_news: featured_news
       news_listing: news_listing
       media_gallery: media_gallery
       latest_events: latest_events
@@ -90,9 +89,6 @@ settings:
       embedded_webform:
         enabled: true
         weight: 22
-      featured_news:
-        enabled: true
-        weight: 23
       news_listing:
         enabled: true
         weight: 24
