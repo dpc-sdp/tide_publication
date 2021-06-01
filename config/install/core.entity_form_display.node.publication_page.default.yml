@@ -5,10 +5,10 @@ dependencies:
     - entity_browser.browser.tide_image_browser
     - field.field.node.publication_page.field_landing_page_component
     - field.field.node.publication_page.field_landing_page_contact
-    - field.field.node.publication_page.field_landing_page_intro_text
-    - field.field.node.publication_page.field_landing_page_show_contact
     - field.field.node.publication_page.field_landing_page_hero_image
     - field.field.node.publication_page.field_landing_page_hero_theme
+    - field.field.node.publication_page.field_landing_page_intro_text
+    - field.field.node.publication_page.field_landing_page_show_contact
     - field.field.node.publication_page.field_landing_page_summary
     - field.field.node.publication_page.field_node_display_headings
     - field.field.node.publication_page.field_publication
@@ -24,7 +24,6 @@ dependencies:
     - entity_browser
     - entity_hierarchy
     - field_group
-    - inline_entity_form
     - maxlength
     - paragraphs
     - path
@@ -34,114 +33,56 @@ third_party_settings:
       children:
         - field_landing_page_show_contact
         - field_landing_page_contact
-      parent_name: group_right_column
-      weight: 15
-      format_type: tab
+      parent_name: group_sidebar
+      weight: 30
+      format_type: details
       format_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: 'Specific contact details - name, address, phone, email can be added in a block to the sidebar.'
         required_fields: true
+        open: false
       label: Contact
-      region: content
-    group_page_header:
-      children:
-        - field_publication
-        - title
-        - field_landing_page_hero_image
-        - field_landing_page_hero_theme
-        - field_landing_page_intro_text
-        - field_landing_page_summary
-      parent_name: group_section_1
-      weight: 2
-      format_type: tab
-      format_settings:
-        id: ''
-        classes: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-      label: 'Page Header'
       region: content
     group_related_links:
       children:
         - field_show_related_content
         - field_related_links
-      parent_name: group_right_column
-      weight: 14
-      format_type: tab
+      parent_name: group_sidebar
+      weight: 20
+      format_type: details
       format_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: 'Related pages can be linked from this sidebar.'
         required_fields: true
+        open: false
       label: 'Related links'
       region: content
     group_publication_navigation:
       children:
         - field_show_publication_nav
-      parent_name: group_right_column
-      weight: 13
-      format_type: tab
+      parent_name: group_sidebar
+      weight: 10
+      format_type: details
       format_settings:
         id: ''
         classes: ''
         formatter: closed
-        description: ''
+        description: 'Add publication navigation to your page. This will sits on the right hand side of the page.'
         required_fields: true
+        open: false
       label: 'Publication Navigation'
-      region: content
-    group_section_1:
-      children:
-        - group_page_header
-        - group_body_content
-      parent_name: ''
-      weight: 0
-      format_type: tabs
-      format_settings:
-        id: ''
-        classes: ''
-        direction: horizontal
-      label: 'Section 1'
-      region: content
-    group_right_column:
-      children:
-        - group_publication_navigation
-        - group_related_links
-        - group_contact
-        - group_social_sharing
-      parent_name: ''
-      weight: 1
-      format_type: tabs
-      format_settings:
-        id: ''
-        classes: ''
-        direction: horizontal
-      label: 'Right column'
-      region: content
-    group_social_sharing:
-      children:
-        - field_show_social_sharing
-      parent_name: group_right_column
-      weight: 16
-      format_type: tab
-      format_settings:
-        id: ''
-        classes: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-      label: 'Social sharing'
       region: content
     group_body_content:
       children:
         - field_show_table_of_content
         - field_node_display_headings
         - field_landing_page_component
-      parent_name: group_section_1
-      weight: 3
+      parent_name: group_section_content
+      weight: -79
       format_type: tab
       format_settings:
         id: ''
@@ -149,8 +90,95 @@ third_party_settings:
         description: ''
         formatter: closed
         required_fields: true
-      label: 'Body Content'
+      label: 'Page content'
       region: content
+    group_section_header:
+      label: 'Header Section'
+      parent_name: ''
+      children:
+        - group_header
+        - group_customised_header
+      format_type: tabs
+      format_settings:
+        direction: horizontal
+        id: node-form-group-header-section
+        classes: ''
+      region: content
+      weight: -100
+    group_header:
+      label: Header
+      parent_name: group_section_header
+      children:
+        - field_publication
+        - title
+        - field_landing_page_summary
+        - field_landing_page_intro_text
+      format_type: tab
+      format_settings:
+        description: ''
+        formatter: closed
+        required_fields: true
+        id: ''
+        classes: ''
+      region: content
+      weight: -99
+    group_customised_header:
+      label: 'Customised Header'
+      parent_name: group_section_header
+      children:
+        - field_landing_page_hero_image
+        - field_landing_page_hero_theme
+      format_type: tab
+      format_settings:
+        description: ''
+        formatter: closed
+        required_fields: true
+        id: ''
+        classes: ''
+      region: content
+      weight: -98
+    group_section_content:
+      label: 'Content Section'
+      parent_name: ''
+      children:
+        - group_body_content
+      format_type: tabs
+      format_settings:
+        direction: horizontal
+        id: node-form-group-content-section
+        classes: ''
+      region: content
+      weight: -70
+    group_section_sidebar:
+      label: 'Sidebar Section'
+      parent_name: ''
+      children:
+        - group_sidebar
+      format_type: tabs
+      format_settings:
+        direction: horizontal
+        id: node-form-group-sidebar-section
+        classes: ''
+      region: content
+      weight: -60
+    group_sidebar:
+      label: Sidebar
+      parent_name: group_section_sidebar
+      children:
+        - field_node_documents
+        - group_publication_navigation
+        - group_related_links
+        - group_contact
+        - field_show_social_sharing
+      format_type: tab
+      format_settings:
+        description: ''
+        formatter: closed
+        required_fields: true
+        id: ''
+        classes: ''
+      region: content
+      weight: -61
 id: node.publication_page.default
 targetEntityType: node
 bundle: publication_page
@@ -172,13 +200,13 @@ content:
       edit_mode: closed
       closed_mode: summary
       autocollapse: none
-      add_mode: select
+      add_mode: modal
       form_display_mode: default
       default_paragraph_type: _none
       closed_mode_threshold: 0
       features:
-        duplicate: duplicate
         collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
     third_party_settings: {  }
   field_landing_page_contact:
     type: entity_reference_paragraphs
@@ -193,7 +221,7 @@ content:
     third_party_settings: {  }
     region: content
   field_landing_page_hero_image:
-    weight: 9
+    weight: 20
     settings:
       entity_browser: tide_image_browser
       field_widget_display: rendered_entity
@@ -203,18 +231,18 @@ content:
       field_widget_remove: true
       selection_mode: selection_append
       field_widget_replace: false
-      open: false
+      open: true
     third_party_settings: {  }
     type: entity_browser_entity_reference
     region: content
   field_landing_page_hero_theme:
-    weight: 10
+    weight: 25
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_landing_page_intro_text:
-    weight: 11
+    weight: 20
     settings:
       rows: 5
       placeholder: ''
@@ -229,7 +257,7 @@ content:
     type: boolean_checkbox
     region: content
   field_landing_page_summary:
-    weight: 12
+    weight: 10
     settings:
       rows: 5
       placeholder: ''
@@ -248,38 +276,33 @@ content:
     type: options_buttons
     region: content
   field_publication:
-    weight: 7
+    weight: -10
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
       hide_weight: true
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_hierarchy_autocomplete
     region: content
   field_related_links:
-    type: paragraphs
+    type: entity_reference_paragraphs
     weight: 7
     settings:
       title: Link
       title_plural: Links
       edit_mode: closed
-      closed_mode: summary
-      autocollapse: none
       add_mode: button
       form_display_mode: default
       default_paragraph_type: _none
-      closed_mode_threshold: 0
-      features:
-        duplicate: duplicate
-        collapse_edit_all: collapse_edit_all
     third_party_settings: {  }
     region: content
   field_show_content_rating:
     type: boolean_checkbox
     region: content
     field_name: field_show_content_rating
-    weight: 8
+    weight: 2
     settings:
       display_label: true
     third_party_settings: {  }
@@ -298,11 +321,10 @@ content:
     type: boolean_checkbox
     region: content
   field_show_social_sharing:
-    type: boolean_checkbox
-    weight: 13
+    type: options_buttons
+    weight: 40
     region: content
-    settings:
-      display_label: true
+    settings: {  }
     third_party_settings: {  }
   field_show_table_of_content:
     weight: 23
@@ -313,7 +335,7 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 12
+    weight: 13
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -334,7 +356,7 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 11
+    weight: 12
     region: content
     third_party_settings: {  }
   sticky:
@@ -346,7 +368,7 @@ content:
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 8
+    weight: 0
     region: content
     settings:
       size: 60
@@ -362,6 +384,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
   url_redirects:

@@ -10,7 +10,7 @@ id: node.publication.field_publication_date
 field_name: field_publication_date
 entity_type: node
 bundle: publication
-label: 'Date of Publication'
+label: 'Date of publication'
 description: ''
 required: false
 translatable: false
