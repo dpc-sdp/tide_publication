@@ -4,12 +4,13 @@ dependencies:
   config:
     - field.storage.node.field_publication_authors
     - node.type.publication
+    - taxonomy.vocabulary.department
 id: node.publication.field_publication_authors
 field_name: field_publication_authors
 entity_type: node
 bundle: publication
-label: 'Publication Authors'
-description: ''
+label: 'Publication author'
+description: 'Use this field to select an author. Choose one mostly applicable.'
 required: false
 translatable: false
 default_value: {  }
