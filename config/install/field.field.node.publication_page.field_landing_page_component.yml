@@ -9,12 +9,12 @@ dependencies:
     - paragraphs.paragraphs_type.call_to_action
     - paragraphs.paragraphs_type.card_carousel
     - paragraphs.paragraphs_type.card_keydates
-    - paragraphs.paragraphs_type.navigation_card
-    - paragraphs.paragraphs_type.promotion_card
     - paragraphs.paragraphs_type.complex_image
     - paragraphs.paragraphs_type.latest_events
     - paragraphs.paragraphs_type.media_gallery
+    - paragraphs.paragraphs_type.navigation_card
     - paragraphs.paragraphs_type.news_listing
+    - paragraphs.paragraphs_type.promotion_card
     - paragraphs.paragraphs_type.timelines
   module:
     - entity_reference_revisions
@@ -23,7 +23,7 @@ field_name: field_landing_page_component
 entity_type: node
 bundle: publication_page
 label: 'Content components'
-description: ''
+description: '<p>Add text, links, media and cards to build your page.</p>'
 required: false
 translatable: true
 default_value: {  }
@@ -38,97 +38,67 @@ settings:
       promotion_card: promotion_card
       navigation_card: navigation_card
       card_keydates: card_keydates
-      call_to_action: call_to_action
-      complex_image: complex_image
-      embedded_webform: embedded_webform
-      news_listing: news_listing
-      media_gallery: media_gallery
-      latest_events: latest_events
       card_carousel: card_carousel
+      embedded_webform: embedded_webform
+      media_gallery: media_gallery
+      complex_image: complex_image
       timelines: timelines
+      call_to_action: call_to_action
+      news_listing: news_listing
+      latest_events: latest_events
     target_bundles_drag_drop:
+      accordion:
+        enabled: true
+        weight: -31
+      accordion_content:
+        weight: -9
+        enabled: false
       banner:
-        weight: -33
+        weight: -6
         enabled: false
       basic_text:
         enabled: true
         weight: -32
-      accordion:
+      call_to_action:
         enabled: true
-        weight: -31
-      promotion_card:
+        weight: -16
+      card_carousel:
         enabled: true
-        weight: -29
-      navigation_card:
+        weight: -27
+      card_keydates:
         enabled: true
         weight: -28
       complex_image:
         enabled: true
-        weight: -28
-      key_journeys:
-        weight: -27
-        enabled: false
-      related_links:
-        weight: -26
-        enabled: false
-      links:
-        weight: -25
-        enabled: false
-      card_keydates:
-        enabled: true
-        weight: -20
-      accordion_content:
-        weight: -19
-        enabled: false
-      keydates:
-        weight: -18
-        enabled: false
-      call_to_action:
-        enabled: true
-        weight: 21
+        weight: -24
       embedded_webform:
         enabled: true
-        weight: 22
-      news_listing:
-        enabled: true
-        weight: 24
-      media_gallery:
-        enabled: true
-        weight: 26
+        weight: -26
+      form_embed_openforms:
+        weight: -17
+        enabled: false
+      keydates:
+        weight: -8
+        enabled: false
       latest_events:
         enabled: true
-        weight: 29
-      card_carousel:
+        weight: -13
+      media_gallery:
         enabled: true
-        weight: 29
-      contact_us:
-        weight: 34
-        enabled: false
-      call_to_action_image:
-        weight: 35
-        enabled: false
-      phone:
-        weight: 38
-        enabled: false
-      social_link:
-        weight: 40
-        enabled: false
-      event_details:
-        weight: 46
-        enabled: false
-      introduction_banner:
-        weight: 48
-        enabled: false
-      embedded_search_form:
-        weight: 52
-        enabled: false
-      hero_banner_with_cta:
-        weight: 57
-        enabled: false
+        weight: -25
+      navigation_card:
+        enabled: true
+        weight: -29
+      news_listing:
+        enabled: true
+        weight: -14
+      promotion_card:
+        enabled: true
+        weight: -30
       timeline:
-        weight: 67
+        weight: 2
         enabled: false
       timelines:
         enabled: true
-        weight: 68
+        weight: -23
 field_type: entity_reference_revisions

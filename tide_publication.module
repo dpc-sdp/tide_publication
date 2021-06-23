@@ -100,6 +100,31 @@ function tide_publication_form_node_form_alter(&$form, FormStateInterface $form_
   if (in_array($form_id, $publication_forms)) {
     // Change form layout.
     $form['#attached']['library'][] = 'tide_landing_page/landing_page_form';
+    $form['#attributes']['class'][] = 'node-form-landing-page';
+
+    // Change the styling of paragraph widgets.
+    $paragraph_fields = [
+      'field_landing_page_component' => t('Page content is currently blank.'),
+    ];
+    foreach ($paragraph_fields as $paragraph_field => $component_name) {
+      $form[$paragraph_field]['widget']['#attributes']['class'][] = 'node-landing-page-alternative-paragraph';
+      if (isset($form[$paragraph_field]['widget']['#max_delta'])) {
+        $max_delta = $form[$paragraph_field]['widget']['#max_delta'];
+        if ($max_delta < 0 || !isset($form[$paragraph_field]['widget'][$max_delta])) {
+          $form[$paragraph_field]['widget']['#description'] = t('<h4><strong>@empty_component</strong></h4>',
+              ['@empty_component' => $component_name]) . $form[$paragraph_field]['widget']['#description'];
+        }
+      }
+    }
+
+    $form['#process'][] = '_tide_publication_form_node_form_process';
+
+    // Move Hero Image theme to Hero Image field group.
+    if (isset($form['field_landing_page_hero_theme']) && isset($form['field_landing_page_hero_image']['widget'])) {
+      $form['field_landing_page_hero_image']['widget']['field_landing_page_hero_theme'] = $form['field_landing_page_hero_theme'];
+      unset($form['field_landing_page_hero_theme']);
+    }
+
     // Add conditional field for show table of content.
     if (isset($form['field_node_display_headings'])) {
       $form['field_node_display_headings']['#states'] = [
@@ -114,6 +139,85 @@ function tide_publication_form_node_form_alter(&$form, FormStateInterface $form_
       }
     }
   }
+}
+
+/**
+ * Node form #process callback.
+ *
+ * @param array $form
+ *   Form that is being processed.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ * @param array $complete_form
+ *   The complete form.
+ *
+ * @return array
+ *   The processed form.
+ */
+function _tide_publication_form_node_form_process(array $form, FormStateInterface $form_state, array $complete_form = []) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $form_state->getFormObject()->getEntity();
+
+  // Add pseudo radio buttons for Header style.
+  $form['_header_style'] = [
+    '#type' => 'container',
+    '#group' => 'group_customised_header',
+    '#weight' => -100,
+  ];
+  $form['_header_style']['_header_style_options'] = [
+    '#title' => t('Header style'),
+    '#description' => t('The header can be customised to incorporate photography and other design elements.'),
+    '#type' => 'radios',
+    '#required' => TRUE,
+    '#options' => [
+      'default' => t('Default appearance'),
+      'fullwidth' => t('Full-width  background image'),
+    ],
+  ];
+
+  $form['field_landing_page_hero_image']['#states']['visible'] = [
+    ':input[name="_header_style_options"]' => [
+      ['value' => 'fullwidth'],
+      ['value' => 'cta'],
+    ],
+  ];
+
+  // Determine the initial value of Header style.
+  $node_hero_image_empty = $node->get('field_landing_page_hero_image')->isEmpty();
+  $header_style = 'default';
+  if (!$node_hero_image_empty) {
+    $header_style = 'fullwidth';
+  }
+  $form['_header_style']['_header_style_options']['#default_value'] = $header_style;
+
+  $form['#after_build'][] = '_tide_publication_form_node_form_after_build';
+  return $form;
+}
+
+/**
+ * Node form #after_build callback.
+ *
+ * @param array $form
+ *   Form that is being processed.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ *
+ * @return array
+ *   The processed form.
+ */
+function _tide_publication_form_node_form_after_build(array $form, FormStateInterface $form_state) {
+  // Determine the current value of Header style.
+  $form_hero_image_empty = empty($form_state->getValue([
+    'field_landing_page_hero_image',
+    'target_id',
+  ]));
+  $header_style = 'default';
+  if (!$form_hero_image_empty) {
+    $header_style = 'fullwidth';
+  }
+  $form['_header_style']['_header_style_options']['#default_value'] = $header_style;
+
+  return $form;
 }
 
 /**

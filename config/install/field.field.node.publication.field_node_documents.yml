@@ -10,7 +10,7 @@ field_name: field_node_documents
 entity_type: node
 bundle: publication
 label: Documents
-description: ''
+description: 'Add the original document to this publication. Format is PDF document. This will sits on the right hand side of the page'
 required: false
 translatable: true
 default_value: {  }

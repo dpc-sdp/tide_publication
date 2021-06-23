@@ -5,6 +5,7 @@
  * Install file.
  */
 
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Item\Field;
@@ -152,6 +153,10 @@ function _tide_publication_update_search_api_index() {
 function tide_publication_update_dependencies() {
   $dependencies['tide_publication'][8001] = ['tide_landing_page' => 8008];
   $dependencies['tide_publication'][8009] = ['tide_core' => 8037];
+  $dependencies['tide_publication'][8011] = [
+    'tide_core' => 8045,
+    'tide_landing_page' => 8037,
+  ];
 
   return $dependencies;
 }
@@ -160,7 +165,7 @@ function tide_publication_update_dependencies() {
  * Add Complex Image component.
  */
 function tide_publication_update_8001() {
-  $content_types = ['publication', 'publication_pages'];
+  $content_types = ['publication', 'publication_page'];
   foreach ($content_types as $content_type) {
     $field_config = FieldConfig::loadByName('node', $content_type, 'field_landing_page_component');
     if ($field_config) {
@@ -416,7 +421,7 @@ function tide_publication_update_8009() {
     $config_read = _tide_read_config($new_field, $config_location, TRUE);
     // Obtain the storage manager for field instances.
     // Create a new field instance from the yaml configuration and save.
-    \Drupal::entityManager()->getStorage('field_config')
+    \Drupal::entityTypeManager()->getStorage('field_config')
       ->create($config_read)
       ->save();
   }
@@ -443,7 +448,7 @@ function tide_publication_update_8009() {
         'field_landing_page_component',
       ];
       $config->set($group_body_content, $third_party_settings);
-      if ($display == 'core.entity_form_display.node.publication.default') {
+      if ($display === 'core.entity_form_display.node.publication.default') {
         $third_party_settings[] = 'field_node_documents';
         $config->set($group_body_content, $third_party_settings);
       }
@@ -529,8 +534,8 @@ function tide_publication_update_8010() {
     $entity_form_display = Drupal::entityTypeManager()
       ->getStorage('entity_form_display')
       ->load($display);
-    $hero_image_wight = ($display == 'node.publication_page.default') ? 9 : 4;
-    $hero_theme_wight = ($display == 'node.publication_page.default') ? 10 : 4;
+    $hero_image_wight = ($display === 'node.publication_page.default') ? 9 : 4;
+    $hero_theme_wight = ($display === 'node.publication_page.default') ? 10 : 4;
     if ($entity_form_display) {
       $entity_form_display->setComponent('field_landing_page_hero_image', [
         'weight' => $hero_image_wight,
@@ -573,13 +578,13 @@ function tide_publication_update_8010() {
       $entity_form_display->save();
       // Set other fields to show below hero image.
       $content = $entity_form_display->get('content');
-      if (isset($content['field_publication_date']) && $display == 'node.publication.default') {
+      if (isset($content['field_publication_date']) && $display === 'node.publication.default') {
         $content['field_publication_date']['weight'] = 5;
       }
-      if (isset($content['field_landing_page_intro_text']) && $display == 'node.publication_page.default') {
+      if (isset($content['field_landing_page_intro_text']) && $display === 'node.publication_page.default') {
         $content['field_landing_page_intro_text']['weight'] = 11;
       }
-      if (isset($content['field_landing_page_summary']) && $display == 'node.publication_page.default') {
+      if (isset($content['field_landing_page_summary']) && $display === 'node.publication_page.default') {
         $content['field_landing_page_summary']['weight'] = 12;
       }
       $entity_form_display->set('content', $content)->save();
@@ -625,44 +630,337 @@ function tide_publication_update_8010() {
 }
 
 /**
- * Updates field settings with new card.
+ * Update node form of Publication.
  */
 function tide_publication_update_8011() {
-  $config = \Drupal::configFactory()
-    ->getEditable('field.field.node.publication_page.field_landing_page_component');
-  $settings = $config->get('settings');
-  $old_cards = [
-    'card_promotion',
-    'card_promotion_auto',
-    'card_event',
-    'card_event_auto',
-    'card_navigation',
-    'card_navigation_auto',
-    'card_navigation_featured',
-    'card_navigation_featured_auto',
-  ];
-  foreach ($old_cards as $item) {
-    if (isset($settings['handler_settings']['target_bundles'][$item])) {
-      unset($settings['handler_settings']['target_bundles'][$item]);
-    }
-    if (isset($settings['handler_settings']['target_bundles_drag_drop'][$item])) {
-      unset($settings['handler_settings']['target_bundles_drag_drop'][$item]);
-    }
-  }
-  $new_cards = [
-    'navigation_card' => -28,
-    'promotion_card' => -29,
-  ];
-  foreach ($new_cards as $item => $weight) {
-    if (!isset($settings['handler_settings']['target_bundles'][$item])) {
-      $settings['handler_settings']['target_bundles'][$item] = $item;
-    }
-    if (!isset($settings['handler_settings']['target_bundles_drag_drop'][$item])) {
-      $settings['handler_settings']['target_bundles_drag_drop'][$item]['enabled'] = TRUE;
-      $settings['handler_settings']['target_bundles_drag_drop'][$item]['weight'] = $weight;
+  module_load_install('tide_landing_page');
+
+  // Add the new cards to field_landing_page_component of Publication Page.
+  $field = FieldConfig::loadByName('node', 'publication_page', 'field_landing_page_component');
+  if ($field) {
+    $handler_settings = $field->getSetting('handler_settings');
+    if (isset($handler_settings['target_bundles']) && !in_array('navigation_card', $handler_settings['target_bundles'])) {
+      $handler_settings['target_bundles']['navigation_card'] = 'navigation_card';
+      $handler_settings['target_bundles']['promotion_card'] = 'promotion_card';
+      $handler_settings['target_bundles_drag_drop']['navigation_card']['enabled'] = TRUE;
+      $handler_settings['target_bundles_drag_drop']['promotion_card']['enabled'] = TRUE;
+
+      // Remove legacy cards.
+      $legacy_cards = [
+        'card_navigation' => 'navigation_card',
+        'card_navigation_auto' => 'navigation_card',
+        'card_navigation_featured' => 'navigation_card',
+        'card_navigation_featured_auto' => 'navigation_card',
+        'card_promotion' => 'promotion_card',
+        'card_promotion_auto' => 'promotion_card',
+        'card_event' => 'promotion_card',
+        'card_event_auto' => 'promotion_card',
+      ];
+      foreach ($legacy_cards as $legacy_card => $new_card) {
+        unset($handler_settings['target_bundles'][$legacy_card]);
+        unset($handler_settings['target_bundles_drag_drop'][$legacy_card]);
+      }
+
+      $field->setSetting('handler_settings', $handler_settings);
+      $field->save();
     }
   }
-  $config->set('settings', $settings)->save();
+
+  $update_field_config = [
+    'field_landing_page_intro_text' => [
+      'label' => t('Introduction text'),
+    ],
+    'field_landing_page_hero_image' => [
+      'description' => t("Full-width background images display at the top of the page behind the page title. One image can be added and must be 1600px wide x 600px high. If a hero image is used, header links will not display."),
+    ],
+    'field_node_documents' => [
+      'description' => t('Add the original document to this publication. Format is PDF document. This will sits on the right hand side of the page'),
+    ],
+    'field_publication_date' => [
+      'label' => t('Date of publication'),
+    ],
+    'field_featured_image' => [
+      'description' => t("Feature images don't display on this page. They display in featured card or navigation links to this page. Must be 496px high x 818px wide."),
+    ],
+    'field_publication_authors' => [
+      'label' => t('Publication author'),
+      'description' => t('Use this field to select an author. Choose one mostly applicable.'),
+    ],
+    'field_landing_page_component' => [
+      'description' => t('<p>Add text, links, media and cards to build your page.</p>'),
+    ],
+    'field_show_table_of_content' => [
+      'label' => t('Show table of contents?'),
+    ],
+    'field_show_social_sharing' => [
+      'label' => t('Social sharing'),
+      'required' => TRUE,
+      'description' => t('The social sharing box can be hidden in special circumstances.'),
+    ],
+    'field_show_related_content' => [
+      'label' => t('Show related content?'),
+    ],
+    'field_landing_page_show_contact' => [
+      'label' => t('Show contact details'),
+    ],
+    'field_landing_page_contact' => [
+      'label' => t('Contact us'),
+    ],
+    'field_show_content_rating' => [
+      'label' => t('Show content rating?'),
+      'description' => t("Show 'Was this page helpful?' feedback form. Do not uncheck this form without admin approval."),
+    ],
+  ];
+
+  $update_field_widgets = [
+    // Header.
+    'field_publication' => ['weight' => -10],
+    'title' => ['weight' => 0],
+    'field_landing_page_summary' => ['weight' => 10],
+    'field_landing_page_intro_text' => ['weight' => 20],
+    // Customised Header.
+    'field_landing_page_hero_image' => [
+      'settings' => ['open' => TRUE],
+      'weight' => 20,
+    ],
+    'field_landing_page_hero_theme' => [
+      'settings' => ['open' => TRUE],
+      'weight' => 25,
+    ],
+    // Featured image.
+    'field_featured_image' => [
+      'settings' => ['open' => TRUE],
+      'weight' => -90,
+    ],
+    // Content.
+    'field_landing_page_component' => [
+      'settings' => ['add_mode' => 'modal'],
+    ],
+    // Sidebar.
+    'field_node_documents' => [
+      'weight' => 0,
+    ],
+    'field_related_links' => [
+      'type' => 'entity_reference_paragraphs',
+      'settings' => [
+        'title' => t('Link'),
+        'title_plural' => t('Links'),
+        'edit_mode' => 'closed',
+        'add_mode' => 'button',
+        'form_display_mode' => 'default',
+        'default_paragraph_type' => '_none',
+      ],
+    ],
+    'field_show_social_sharing' => [
+      'type' => 'options_buttons',
+      'weight' => 40,
+    ],
+    // General.
+    'field_topic' => ['weight' => 0],
+    'field_show_content_rating' => ['weight' => 2],
+  ];
+
+  // Use Select2 for Publication Authors field.
+  if (\Drupal::moduleHandler()->moduleExists('select2')) {
+    foreach (['field_publication_authors'] as $select2_field) {
+      $update_field_widgets[$select2_field]['type'] = 'select2_entity_reference';
+      $update_field_widgets[$select2_field]['settings'] = [
+        'match_operator' => 'CONTAINS',
+        'match_limit' => 10,
+        'autocomplete' => FALSE,
+        'width' => '100%',
+      ];
+    }
+  }
+
+  $bundles = ['publication', 'publication_page'];
+  foreach ($bundles as $bundle) {
+    // Update the field instances.
+    foreach ($update_field_config as $field_name => $replacements) {
+      /** @var \Drupal\Core\Field\FieldConfigInterface $field_config */
+      $field_config = FieldConfig::loadByName('node', $bundle, $field_name);
+      if ($field_config) {
+        $config = $field_config->toArray();
+        $config = array_replace_recursive($config, $replacements);
+        /** @var \Drupal\Core\Field\FieldConfigInterface $new_field_config */
+        $new_field_config = FieldConfig::create($config);
+        $new_field_config->original = $field_config;
+        $new_field_config->enforceIsNew(FALSE);
+        $new_field_config->save();
+      }
+    }
+
+    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+    $form_display = EntityFormDisplay::load('node.' . $bundle . '.default');
+    if (!$form_display) {
+      continue;
+    }
+
+    // Update field widgets.
+    foreach ($update_field_widgets as $field => $replacements) {
+      if (!is_array($replacements)) {
+        $replacements = ['weight' => $replacements];
+      }
+      $component = $form_display->getComponent($field);
+      if ($component) {
+        $component = array_replace_recursive($component, $replacements);
+        $form_display->setComponent($field, $component);
+      }
+    }
+
+    // Update the field groups.
+    $field_group = $form_display->getThirdPartySettings('field_group');
+
+    // Header section.
+    $field_group['group_section_header'] = _tide_landing_page_new_field_group_tabs('Header Section',
+      'horizontal', 'node-form-group-header-section', '', 'content', -100);
+    $field_group['group_section_header']['children'] = [
+      'group_header',
+      'group_customised_header',
+    ];
+
+    // Header - Header tab.
+    $field_group['group_header'] = _tide_landing_page_new_field_group_tab('Header',
+      'group_section_header', [], 'content', -99);
+    $field_group['group_header']['children'] = [
+      'field_publication',
+      'title',
+      'field_landing_page_summary',
+      'field_landing_page_intro_text',
+    ];
+
+    // Header - Customised header tab.
+    $field_group['group_customised_header'] = _tide_landing_page_new_field_group_tab('Customised Header',
+      'group_section_header', [], 'content', -98);
+    $field_group['group_customised_header']['children'] = [
+      'field_landing_page_hero_image',
+      'field_landing_page_hero_theme',
+    ];
+
+    // Publication metadata.
+    if ($bundle === 'publication') {
+      $field_group['group_publication_metadata'] = [
+        'label' => 'Publication metadata',
+        'format_type' => 'html_element',
+        'format_settings' => [
+          'open' => TRUE,
+          'collapsible' => FALSE,
+          'element' => 'div',
+          'show_label' => FALSE,
+          'label_element' => 'h3',
+          'label_element_classes' => '',
+          'required_fields' => TRUE,
+          'attributes' => '',
+          'classes' => 'seven-details js-form-wrapper form-wrapper seven-details__wrapper details-wrapper',
+        ],
+        'children' => [
+          'field_license_type',
+          'field_publication_date',
+          'field_publication_authors',
+        ],
+        'region' => 'content',
+        'weight' => -80,
+      ];
+    }
+
+    // Content section.
+    $field_group['group_section_content'] = _tide_landing_page_new_field_group_tabs('Content Section',
+      'horizontal', 'node-form-group-content-section', '', 'content', -70);
+    $field_group['group_section_content']['children'] = [
+      'group_body_content',
+    ];
+    // Content - Page content tab.
+    if (isset($field_group['group_body_content'])) {
+      $field_group['group_body_content'] = array_replace_recursive($field_group['group_body_content'], [
+        'label' => 'Page content',
+        'format_type' => 'tab',
+        'parent_name' => 'group_section_content',
+        'region' => 'content',
+        'weight' => -79,
+      ]);
+    }
+
+    // Sidebar section.
+    $field_group['group_section_sidebar'] = _tide_landing_page_new_field_group_tabs('Sidebar Section',
+      'horizontal', 'node-form-group-sidebar-section', '', 'content', -60, '',
+      ['group_sidebar']);
+    // Sidebar - Sidebar tab.
+    $field_group['group_sidebar'] = _tide_landing_page_new_field_group_tab('Sidebar',
+      'group_section_sidebar', [], 'content', -61);
+    $field_group['group_sidebar']['children'] = [
+      'field_node_documents',
+      'group_publication_navigation',
+      'group_related_links',
+      'group_contact',
+      'field_show_social_sharing',
+    ];
+    if (isset($field_group['group_publication_navigation'])) {
+      $field_group['group_publication_navigation'] = array_replace_recursive($field_group['group_publication_navigation'],
+        [
+          'format_type' => 'details',
+          'format_settings' => [
+            'open' => FALSE,
+            'description' => t('Add publication navigation to your page. This will sits on the right hand side of the page.'),
+          ],
+          'parent_name' => 'group_sidebar',
+          'region' => 'content',
+          'weight' => 10,
+        ]);
+    }
+    if (isset($field_group['group_related_links'])) {
+      $field_group['group_related_links'] = array_replace_recursive($field_group['group_related_links'],
+        [
+          'format_type' => 'details',
+          'format_settings' => [
+            'open' => FALSE,
+            'description' => t('Related pages can be linked from this sidebar.'),
+          ],
+          'parent_name' => 'group_sidebar',
+          'region' => 'content',
+          'weight' => 20,
+        ]);
+    }
+    if (isset($field_group['group_contact'])) {
+      $field_group['group_contact'] = array_replace_recursive($field_group['group_contact'],
+        [
+          'label' => t('Contact'),
+          'format_type' => 'details',
+          'format_settings' => [
+            'open' => FALSE,
+            'description' => t('Specific contact details - name, address, phone, email can be added in a block to the sidebar.'),
+          ],
+          'children' => [
+            'field_landing_page_show_contact',
+            'field_landing_page_contact',
+          ],
+          'parent_name' => 'group_sidebar',
+          'region' => 'content',
+          'weight' => 30,
+        ]);
+    }
+
+    foreach ($field_group as $group_name => $group_settings) {
+      $form_display->setThirdPartySetting('field_group', $group_name, $group_settings);
+    }
+
+    // Removes unused groups.
+    $unused_groups = [
+      'group_section_1',
+      'group_header_content',
+      'group_page_header',
+      'group_top_banner',
+      'group_bottom_',
+      'group_right_column',
+      'group_blocks',
+      'group_social_sharing',
+    ];
+    foreach ($unused_groups as $group_name) {
+      unset($field_group[$group_name]);
+      $form_display->unsetThirdPartySetting('field_group', $group_name);
+    }
+
+    $form_display->save();
+  }
 }
 
 /**

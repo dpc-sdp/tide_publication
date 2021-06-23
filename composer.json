@@ -4,8 +4,8 @@
   "type": "drupal-module",
   "license": "GPL-2.0-or-later",
   "require": {
-    "dpc-sdp/tide_core": "^2.0.0",
-    "dpc-sdp/tide_landing_page": "^2.0.0",
+    "dpc-sdp/tide_core": "^2.0.10",
+    "dpc-sdp/tide_landing_page": "^2.0.4",
     "drupal/entity_hierarchy": "~2.0"
   },
   "suggest": {
