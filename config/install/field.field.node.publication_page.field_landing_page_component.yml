@@ -44,7 +44,6 @@ settings:
       complex_image: complex_image
       timelines: timelines
       call_to_action: call_to_action
-      featured_news: featured_news
       news_listing: news_listing
       latest_events: latest_events
     target_bundles_drag_drop:
@@ -75,9 +74,6 @@ settings:
       embedded_webform:
         enabled: true
         weight: -26
-      featured_news:
-        enabled: true
-        weight: -15
       form_embed_openforms:
         weight: -17
         enabled: false
