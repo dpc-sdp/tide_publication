@@ -146,7 +146,6 @@ Feature: Fields for Publication content type
     And I should see the button "Key dates"
     And I should see the button "Image gallery"
     And I should see the button "Complex image"
-    And I should see the button "Featured news"
     And I should see the button "Form embed (Drupal)"
     And I should see the button "Timelines"
     And I should see the button "News listing"
