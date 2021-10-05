@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class PublicationResource.
+ * Class PublicationResource Controller.
  *
  * @package Drupal\tide_publication\Controller
  */
