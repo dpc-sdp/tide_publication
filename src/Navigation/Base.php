@@ -90,7 +90,7 @@ abstract class Base extends EntityReferenceFieldItemList {
    */
   protected function validateEntityType(array $allowed_bundles = [
     'publication',
-    'publication_page'
+    'publication_page',
   ]) {
     $entity = $this->getEntity();
     return ($entity->getEntityTypeId() == 'node') && in_array($entity->bundle(), $allowed_bundles) && !$entity->isNew();

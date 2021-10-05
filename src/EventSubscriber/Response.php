@@ -23,8 +23,8 @@ class Response implements EventSubscriberInterface {
     // before DynamicPageCacheSubscriber (priority 100).
     $events = [];
     $events[KernelEvents::RESPONSE][] = [
-      'addPublicationNavigationCacheContext', 
-      127
+      'addPublicationNavigationCacheContext',
+      127,
     ];
 
     return $events;
@@ -43,7 +43,7 @@ class Response implements EventSubscriberInterface {
     $entity = $request->attributes->get('entity');
     if ($entity && in_array($entity->bundle(), [
       'publication',
-      'publication_page'
+      'publication_page',
     ])) {
       $response = $event->getResponse();
       if (!$response instanceof CacheableResponseInterface) {
