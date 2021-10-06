@@ -159,7 +159,7 @@ class PublicationResource extends EntityResource {
       $this->cacheData->set($cid, $flatten_hierarchy, $cache->getCacheMaxAge(), $cache->getCacheTags());
     }
 
-    $self_link = new Link(new CacheableMetadata(), self::getRequestLink($request), ['self']);
+    $self_link = new Link(new CacheableMetadata(), self::getRequestLink($request), 'self');
     $links = (new LinkCollection([]))->withLink('self', $self_link);
     $serialized_links = $this->serializer->normalize($links, 'api_json');
 
