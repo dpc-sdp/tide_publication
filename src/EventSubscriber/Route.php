@@ -6,7 +6,7 @@ use Drupal\Core\Routing\RouteSubscriberBase;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Class Route.
+ * Class Route for EventSubscriber.
  *
  * @package Drupal\tide_publication\EventSubscriber
  */

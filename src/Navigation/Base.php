@@ -11,7 +11,7 @@ use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\entity_hierarchy\Storage\NestedSetStorage;
 
 /**
- * Class Base.
+ * Class Base for navigation.
  */
 abstract class Base extends EntityReferenceFieldItemList {
   use ComputedItemListTrait;
@@ -88,7 +88,10 @@ abstract class Base extends EntityReferenceFieldItemList {
    * @return bool
    *   TRUE if valid.
    */
-  protected function validateEntityType(array $allowed_bundles = ['publication', 'publication_page']) {
+  protected function validateEntityType(array $allowed_bundles = [
+    'publication',
+    'publication_page',
+  ]) {
     $entity = $this->getEntity();
     return ($entity->getEntityTypeId() == 'node') && in_array($entity->bundle(), $allowed_bundles) && !$entity->isNew();
   }

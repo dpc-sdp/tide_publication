@@ -5,7 +5,7 @@ namespace Drupal\tide_publication\Navigation;
 use Drupal\Core\Cache\CacheableMetadata;
 
 /**
- * Class Next.
+ * Class Next for navigation.
  */
 class Next extends Base {
 

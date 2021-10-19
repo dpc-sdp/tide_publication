@@ -5,7 +5,7 @@ namespace Drupal\tide_publication\Navigation;
 use Drupal\Core\Cache\CacheableMetadata;
 
 /**
- * Class Root.
+ * Class Root to find the root entity.
  */
 class Root extends Base {
 

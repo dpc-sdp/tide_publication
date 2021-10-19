@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class Response.
+ * Class Response for EventSubscriber.
  *
  * @package Drupal\tide_publication\EventSubscriber
  */
@@ -21,7 +21,11 @@ class Response implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     // Run after JSON API ResourceResponseSubscriber (priority 128) and
     // before DynamicPageCacheSubscriber (priority 100).
-    $events[KernelEvents::RESPONSE][] = ['addPublicationNavigationCacheContext', 127];
+    $events = [];
+    $events[KernelEvents::RESPONSE][] = [
+      'addPublicationNavigationCacheContext',
+      127,
+    ];
 
     return $events;
   }
@@ -37,7 +41,10 @@ class Response implements EventSubscriberInterface {
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     $entity = $request->attributes->get('entity');
-    if ($entity && in_array($entity->bundle(), ['publication', 'publication_page'])) {
+    if ($entity && in_array($entity->bundle(), [
+      'publication',
+      'publication_page',
+    ])) {
       $response = $event->getResponse();
       if (!$response instanceof CacheableResponseInterface) {
         return;
