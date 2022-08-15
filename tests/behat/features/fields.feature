@@ -41,12 +41,12 @@ Feature: Fields for Publication content type
     And I should see an "input#edit-field-featured-image-entity-browser-entity-browser-open-modal" element
 
     And I click on the horizontal tab "Page content"
-    And I see field "Show table of contents?"
+    And I see field "Show table of contents"
     And I should see an "input#edit-field-show-table-of-content-value" element
     And I should not see an "input#edit-field-show-table-of-content.required" element
 
     When I check "edit-field-show-table-of-content-value"
-    Then I should see text matching "Display headings"
+    Then I should see text matching "Choose headings to display"
     And I should see an "input#edit-field-node-display-headings-showh2" element
     And I should see an "input#edit-field-node-display-headings-showh2andh3" element
 
@@ -125,12 +125,12 @@ Feature: Fields for Publication content type
     And I should see a "select#edit-field-landing-page-hero-theme" element
 
     And I click on the horizontal tab "Page content"
-    And I see field "Show table of contents?"
+    And I see field "Show table of contents"
     And I should see an "input#edit-field-show-table-of-content-value" element
     And I should not see an "input#edit-field-show-table-of-content.required" element
 
     When I check "edit-field-show-table-of-content-value"
-    Then I should see text matching "Display headings"
+    Then I should see text matching "Choose headings to display"
     And I should see an "input#edit-field-node-display-headings-showh2" element
     And I should see an "input#edit-field-node-display-headings-showh2andh3" element
 
