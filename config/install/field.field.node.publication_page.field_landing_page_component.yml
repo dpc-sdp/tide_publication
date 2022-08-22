@@ -15,6 +15,7 @@ dependencies:
     - paragraphs.paragraphs_type.navigation_card
     - paragraphs.paragraphs_type.news_listing
     - paragraphs.paragraphs_type.promotion_card
+    - paragraphs.paragraphs_type.statistics_grid
     - paragraphs.paragraphs_type.timelines
   module:
     - entity_reference_revisions
@@ -46,6 +47,7 @@ settings:
       call_to_action: call_to_action
       news_listing: news_listing
       latest_events: latest_events
+      statistics_grid: statistics_grid
     target_bundles_drag_drop:
       accordion:
         enabled: true
@@ -95,6 +97,9 @@ settings:
       promotion_card:
         enabled: true
         weight: -30
+      statistics_grid:
+        enabled: true
+        weight: 152
       timeline:
         weight: 2
         enabled: false
