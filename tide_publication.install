@@ -991,14 +991,17 @@ function tide_publication_update_8012() {
  */
 function tide_publication_update_8013() {
   // Add the new paragraph type to field_landing_page_component.
-  $field = FieldConfig::loadByName('node', 'publication_page', 'field_landing_page_component');
-  if ($field) {
-    $handler_settings = $field->getSetting('handler_settings');
-    if (isset($handler_settings['target_bundles']) && !in_array('statistics_grid', $handler_settings['target_bundles'])) {
-      $handler_settings['target_bundles']['statistics_grid'] = 'statistics_grid';
-      $handler_settings['target_bundles_drag_drop']['statistics_grid']['enabled'] = TRUE;
-      $field->setSetting('handler_settings', $handler_settings);
-      $field->save();
+  $bundles = ['publication', 'publication_page'];
+  foreach ($bundles as $bundle) {
+    $field = FieldConfig::loadByName('node', $bundle, 'field_landing_page_component');
+    if ($field) {
+      $handler_settings = $field->getSetting('handler_settings');
+      if (isset($handler_settings['target_bundles']) && !in_array('statistics_grid', $handler_settings['target_bundles'])) {
+        $handler_settings['target_bundles']['statistics_grid'] = 'statistics_grid';
+        $handler_settings['target_bundles_drag_drop']['statistics_grid']['enabled'] = TRUE;
+        $field->setSetting('handler_settings', $handler_settings);
+        $field->save();
+      }
     }
   }
 }
