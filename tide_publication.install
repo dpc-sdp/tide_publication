@@ -184,7 +184,7 @@ function tide_publication_update_8001() {
  */
 function tide_publication_update_8002() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
+  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_publication') . '/config/install'];
   if (!FieldConfig::loadByName('node', 'publication', 'field_tags')) {
     _tide_import_single_config('field.field.node.publication.field_tags', $config_location, TRUE);
     _tide_import_single_config('core.entity_view_display.node.publication.default', $config_location, TRUE);
@@ -415,7 +415,7 @@ function tide_publication_update_8008() {
  */
 function tide_publication_update_8009() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
+  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_publication') . '/config/install'];
   $new_fields = [
     'field.field.node.publication_page.field_node_display_headings',
     'field.field.node.publication.field_node_display_headings',
@@ -512,7 +512,7 @@ function tide_publication_update_8009() {
  */
 function tide_publication_update_8010() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_publication') . '/config/install'];
+  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_publication') . '/config/install'];
   $new_fields = [
     'field.field.node.publication_page.field_landing_page_hero_image',
     'field.field.node.publication_page.field_landing_page_hero_theme',
@@ -625,7 +625,7 @@ function tide_publication_update_8010() {
   foreach ($json_file_name as $file_name) {
     // Add paragraph type to JSON.
     $json_field = 'jsonapi_extras.jsonapi_resource_config.' . $file_name;
-    $config_location = [drupal_get_path('module', 'tide_publication') . '/config/optional'];
+    $config_location = [\Drupal::service('extension.list.module')->getPath('tide_publication') . '/config/optional'];
     $config_storage = \Drupal::service('config.storage');
     $config_read = _tide_read_config($json_field, $config_location, TRUE);
     $config_storage->write($json_field, $config_read);
