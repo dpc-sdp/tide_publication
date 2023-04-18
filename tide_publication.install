@@ -1025,3 +1025,34 @@ function tide_publication_update_8014() {
     }
   }
 }
+
+/**
+ * Update Publication metadata group to use fieldset.
+ */
+function tide_publication_update_8015() {
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+  $form_display = EntityFormDisplay::load('node.publication.default');
+  $field_group = $form_display->getThirdPartySettings('field_group');
+  $group_settings = [
+    'label' => 'Publication metadata',
+    'format_type' => 'fieldset',
+    'format_settings' => [
+      'show_empty_fields' => FALSE,
+      'id' => '',
+      'description' => '',
+      'required_fields' => TRUE,
+      'classes' => '',
+    ],
+    'children' => [
+      'field_license_type',
+      'field_publication_date',
+      'field_publication_authors',
+    ],
+    'region' => 'content',
+    'weight' => -80,
+  ];
+  if (isset($field_group['group_publication_metadata'])) {
+    $form_display->setThirdPartySetting('field_group', 'group_publication_metadata', $group_settings);
+    $form_display->save();
+  }
+}

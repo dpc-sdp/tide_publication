@@ -187,24 +187,21 @@ third_party_settings:
       region: content
       weight: -61
     group_publication_metadata:
-      label: 'Publication metadata'
-      format_type: html_element
-      format_settings:
-        open: true
-        collapsible: false
-        element: div
-        show_label: false
-        label_element: h3
-        label_element_classes: ''
-        required_fields: true
-        attributes: ''
-        classes: 'seven-details js-form-wrapper form-wrapper seven-details__wrapper details-wrapper'
       children:
         - field_license_type
         - field_publication_date
         - field_publication_authors
+      label: 'Publication metadata'
       region: content
+      parent_name: ''
       weight: -80
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        description: ''
+        required_fields: true
 id: node.publication.default
 targetEntityType: node
 bundle: publication
