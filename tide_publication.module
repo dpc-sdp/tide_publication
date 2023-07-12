@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\tide_publication\Navigation\Children;
 use Drupal\tide_publication\Navigation\Next;
@@ -16,7 +17,6 @@ use Drupal\tide_publication\Navigation\Root;
 use Drupal\tide_publication\TidePublicationFieldStorageDefinition;
 use Drupal\user\Entity\Role;
 use Drupal\workflows\Entity\Workflow;
-use Drupal\Core\Url;
 
 /**
  * Implements hook_entity_bundle_create().
