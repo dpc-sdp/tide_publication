@@ -55,7 +55,10 @@ function tide_publication_entity_bundle_create($entity_type_id, $bundle) {
       $role = Role::load($role_name);
       if ($role) {
         foreach ($permissions as $permission) {
-          $role->grantPermission($permission);
+          $permissionExists = $role->hasPermission($permission);
+          if (!$permissionExists) {
+            $role->grantPermission($permission);
+          }
         }
         $role->save();
       }
