@@ -33,7 +33,7 @@ class Response implements EventSubscriberInterface {
   /**
    * Add Publication Nav cache context and tags of JSON API response.
    *
-   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event $event
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The event object.
    */
   public function addPublicationNavigationCacheContext(ResponseEvent $event) {
