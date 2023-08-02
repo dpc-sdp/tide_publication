@@ -28,3 +28,13 @@ function tide_publication_install() {
 function tide_publication_uninstall() {
   TidePublicationOperation::assignNecessaryPermissions(TRUE);
 }
+
+/**
+ * Update pathauto.pattern.publication_pages to be compatible with D10.
+ */
+function tide_publication_update_10100() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('pathauto.pattern.publication_pages');
+  $config->set('selection_criteria.96994a80-9dfb-4bf3-b9cf-7fc3e3503c56.id', 'entity_bundle:node');
+  $config->save();
+}
