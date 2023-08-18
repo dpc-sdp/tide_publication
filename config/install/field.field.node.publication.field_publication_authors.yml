@@ -1,16 +1,19 @@
+uuid: 53e1711e-9e06-497f-8b29-7361d0bd0273
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_publication_authors
     - node.type.publication
-    - taxonomy.vocabulary.department
+    - taxonomy.vocabulary.organisation
+_core:
+  default_config_hash: '-ExNyXJOfyV6z82S2g3GreY6Vnqw4F48Y1fJ5BVTRWw'
 id: node.publication.field_publication_authors
 field_name: field_publication_authors
 entity_type: node
 bundle: publication
 label: 'Publication author'
-description: 'Use this field to select an author. Choose one mostly applicable.'
+description: 'Start typing to choose one publication author.'
 required: false
 translatable: false
 default_value: {  }
@@ -19,5 +22,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      department: department
+      organisation: organisation
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: department
 field_type: entity_reference
