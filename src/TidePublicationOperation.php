@@ -22,6 +22,11 @@ class TidePublicationOperation {
   const PUBLICATION_AUTHORS_FIELD_NAME = 'field_publication_authors';
 
   /**
+   * The publication authors field description.
+   */
+  const PUBLICATION_AUTHORS_FIELD_DESCRIPTION = 'Start typing to choose one publication author.';
+
+  /**
    * The publication authors field storage.
    */
   const PUBLICATION_AUTHORS_FIELD_STORAGE = 'field.storage.node.field_publication_authors';
@@ -44,6 +49,7 @@ class TidePublicationOperation {
     $field = FieldConfig::loadByName('node', self::BUNDLE, self::PUBLICATION_AUTHORS_FIELD_NAME);
     $new_field = $field->toArray();
     $new_field['field_type'] = 'entity_reference';
+    $new_field['description'] = self::PUBLICATION_AUTHORS_FIELD_DESCRIPTION;
     $new_field['dependencies'] = [
       'config' => [
         'field.storage.' . $config->get('id'),
