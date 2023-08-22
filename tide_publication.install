@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Item\Field;
+use Drupal\tide_publication\TidePublicationOperation;
 use Drupal\user\Entity\Role;
 use Drupal\workflows\Entity\Workflow;
 
@@ -1055,4 +1056,18 @@ function tide_publication_update_8015() {
     $form_display->setThirdPartySetting('field_group', 'group_publication_metadata', $group_settings);
     $form_display->save();
   }
+}
+
+/**
+ * Update field_publication_authors cardinality and vocabulary to 'organisation'.
+ */
+function tide_publication_update_8016() {
+  $tidePublicationOperation = new TidePublicationOperation();
+  $new_vocabulary = 'organisation';
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable($tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_STORAGE);
+  $config->set('cardinality', 1);
+  $config->save();
+
+  $tidePublicationOperation->updateFieldPublicationAuthorsVocabulary($config, $new_vocabulary);
 }
