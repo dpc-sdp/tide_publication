@@ -2,6 +2,7 @@
 
 namespace Drupal\tide_publication;
 
+use Drupal\Core\Config\Config;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
 
@@ -33,7 +34,7 @@ class TidePublicationOperation {
    * @param string $vocabulary
    *   The new vocabulary.
    */
-  public function updateFieldPublicationAuthorsVocabulary(\Drupal\Core\Config\Config $config, string $vocabulary) {
+  public function updateFieldPublicationAuthorsVocabulary(Config $config, string $vocabulary) {
     // Creates vocabulary if doesn't exist.
     $vocabularies = Vocabulary::loadMultiple();
     if (!isset($vocabularies[$vocabulary])) {
@@ -77,4 +78,5 @@ class TidePublicationOperation {
     ]);
     $vocabulary->save();
   }
+
 }

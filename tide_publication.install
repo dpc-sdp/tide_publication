@@ -1059,7 +1059,7 @@ function tide_publication_update_8015() {
 }
 
 /**
- * Update field_publication_authors cardinality and vocabulary to 'organisation'.
+ * Update field_publication_authors cardinality and vocabulary to organisation.
  */
 function tide_publication_update_8016() {
   $tidePublicationOperation = new TidePublicationOperation();
