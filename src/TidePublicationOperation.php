@@ -17,6 +17,11 @@ class TidePublicationOperation {
   const BUNDLE = 'publication';
 
   /**
+   * The entity reference field type.
+   */
+  const ENTITY_REFERENCE_FIELD_TYPE = 'entity_reference';
+
+  /**
    * The publication authors field name.
    */
   const PUBLICATION_AUTHORS_FIELD_NAME = 'field_publication_authors';
@@ -47,27 +52,29 @@ class TidePublicationOperation {
     }
 
     $field = FieldConfig::loadByName('node', self::BUNDLE, self::PUBLICATION_AUTHORS_FIELD_NAME);
-    $new_field = $field->toArray();
-    $new_field['field_type'] = 'entity_reference';
-    $new_field['description'] = self::PUBLICATION_AUTHORS_FIELD_DESCRIPTION;
-    $new_field['dependencies'] = [
-      'config' => [
-        'field.storage.' . $config->get('id'),
-        'node.type.' . self::BUNDLE,
-        'taxonomy.vocabulary.' . $vocabulary,
-      ],
-    ];
-    $new_field['settings'] = [
-      'handler_settings' => [
-        'target_bundles' => [
-          'department' => $vocabulary,
+    if ($field->get('field_type') === self::ENTITY_REFERENCE_FIELD_TYPE) {
+      $new_field = $field->toArray();
+      $new_field['field_type'] = self::ENTITY_REFERENCE_FIELD_TYPE;
+      $new_field['description'] = self::PUBLICATION_AUTHORS_FIELD_DESCRIPTION;
+      $new_field['dependencies'] = [
+        'config' => [
+          'field.storage.' . $config->get('id'),
+          'node.type.' . self::BUNDLE,
+          'taxonomy.vocabulary.' . $vocabulary,
         ],
-      ],
-    ];
-    $new_field = FieldConfig::create($new_field);
-    $new_field->original = $field;
-    $new_field->enforceIsNew(FALSE);
-    $new_field->save();
+      ];
+      $new_field['settings'] = [
+        'handler_settings' => [
+          'target_bundles' => [
+            'department' => $vocabulary,
+          ],
+        ],
+      ];
+      $new_field = FieldConfig::create($new_field);
+      $new_field->original = $field;
+      $new_field->enforceIsNew(FALSE);
+      $new_field->save();
+    }
   }
 
   /**
