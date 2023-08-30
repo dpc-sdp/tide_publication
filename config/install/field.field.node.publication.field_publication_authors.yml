@@ -1,4 +1,3 @@
-uuid: 53e1711e-9e06-497f-8b29-7361d0bd0273
 langcode: en
 status: true
 dependencies:
@@ -6,8 +5,6 @@ dependencies:
     - field.storage.node.field_publication_authors
     - node.type.publication
     - taxonomy.vocabulary.organisation
-_core:
-  default_config_hash: '-ExNyXJOfyV6z82S2g3GreY6Vnqw4F48Y1fJ5BVTRWw'
 id: node.publication.field_publication_authors
 field_name: field_publication_authors
 entity_type: node
