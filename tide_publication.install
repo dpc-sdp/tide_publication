@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Item\Field;
+use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\tide_publication\TidePublicationOperation;
 use Drupal\user\Entity\Role;
 use Drupal\workflows\Entity\Workflow;
@@ -1063,11 +1064,40 @@ function tide_publication_update_8015() {
  */
 function tide_publication_update_8016() {
   $tidePublicationOperation = new TidePublicationOperation();
-  $new_vocabulary = 'organisation';
+  $vocabulary = 'organisation';
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable($tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_STORAGE);
   $config->set('cardinality', 1);
   $config->save();
 
-  $tidePublicationOperation->updateFieldPublicationAuthorsVocabulary($config, $new_vocabulary);
+   // Creates vocabulary if doesn't exist.
+    $vocabularies = Vocabulary::loadMultiple();
+    if (!isset($vocabularies[$vocabulary])) {
+      $tidePublicationOperation->createVocabulary($vocabulary);
+    }
+
+    $field = FieldConfig::loadByName('node', $tidePublicationOperation::BUNDLE, $tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_NAME);
+    if ($field->get('field_type') === $tidePublicationOperation::ENTITY_REFERENCE_FIELD_TYPE) {
+      $new_field = $field->toArray();
+      $new_field['field_type'] = $tidePublicationOperation::ENTITY_REFERENCE_FIELD_TYPE;
+      $new_field['description'] = $tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_DESCRIPTION;
+      $new_field['dependencies'] = [
+        'config' => [
+          'field.storage.' . $config->get('id'),
+          'node.type.' . $tidePublicationOperation::BUNDLE,
+          'taxonomy.vocabulary.' . $vocabulary,
+        ],
+      ];
+      $new_field['settings'] = [
+        'handler_settings' => [
+          'target_bundles' => [
+            'department' => $vocabulary,
+          ],
+        ],
+      ];
+      $new_field = FieldConfig::create($new_field);
+      $new_field->original = $field;
+      $new_field->enforceIsNew(FALSE);
+      $new_field->save();
+    }
 }
