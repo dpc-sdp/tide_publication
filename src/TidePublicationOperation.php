@@ -2,8 +2,6 @@
 
 namespace Drupal\tide_publication;
 
-use Drupal\Core\Config\Config;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
 
 /**
