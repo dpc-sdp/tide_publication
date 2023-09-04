@@ -1066,7 +1066,7 @@ function tide_publication_update_8016() {
   $tidePublicationOperation = new TidePublicationOperation();
   $vocabulary = 'organisation';
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable($tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_STORAGE);
+  $config = $config_factory->getEditable('field.storage.node.field_publication_authors');
   $config->set('cardinality', 1);
   $config->save();
 
@@ -1076,15 +1076,15 @@ function tide_publication_update_8016() {
     $tidePublicationOperation->createVocabulary($vocabulary);
   }
 
-  $field = FieldConfig::loadByName('node', $tidePublicationOperation::BUNDLE, $tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_NAME);
-  if ($field->get('field_type') === $tidePublicationOperation::ENTITY_REFERENCE_FIELD_TYPE) {
+  $field = FieldConfig::loadByName('node', $tidePublicationOperation::'publication', $tidePublicationOperation::'field_publication_authors');
+  if ($field->get('field_type') === $tidePublicationOperation::'entity_reference') {
     $new_field = $field->toArray();
-    $new_field['field_type'] = $tidePublicationOperation::ENTITY_REFERENCE_FIELD_TYPE;
-    $new_field['description'] = $tidePublicationOperation::PUBLICATION_AUTHORS_FIELD_DESCRIPTION;
+    $new_field['field_type'] = $tidePublicationOperation::'entity_reference';
+    $new_field['description'] = $tidePublicationOperation::'Start typing to choose one publication author.';
     $new_field['dependencies'] = [
       'config' => [
         'field.storage.' . $config->get('id'),
-        'node.type.' . $tidePublicationOperation::BUNDLE,
+        'node.type.' . $tidePublicationOperation::'publication',
         'taxonomy.vocabulary.' . $vocabulary,
       ],
     ];
