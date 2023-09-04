@@ -1076,15 +1076,15 @@ function tide_publication_update_8016() {
     $tidePublicationOperation->createVocabulary($vocabulary);
   }
 
-  $field = FieldConfig::loadByName('node', $tidePublicationOperation::'publication', $tidePublicationOperation::'field_publication_authors');
-  if ($field->get('field_type') === $tidePublicationOperation::'entity_reference') {
+  $field = FieldConfig::loadByName('node', 'publication', 'field_publication_authors');
+  if ($field->get('field_type') === 'entity_reference') {
     $new_field = $field->toArray();
-    $new_field['field_type'] = $tidePublicationOperation::'entity_reference';
-    $new_field['description'] = $tidePublicationOperation::'Start typing to choose one publication author.';
+    $new_field['field_type'] = 'entity_reference';
+    $new_field['description'] = 'Start typing to choose one publication author.';
     $new_field['dependencies'] = [
       'config' => [
         'field.storage.' . $config->get('id'),
-        'node.type.' . $tidePublicationOperation::'publication',
+        'node.type.' . 'publication',
         'taxonomy.vocabulary.' . $vocabulary,
       ],
     ];
