@@ -1084,7 +1084,7 @@ function tide_publication_update_8016() {
     $new_field['dependencies'] = [
       'config' => [
         'field.storage.' . $config->get('id'),
-        'node.type.' . 'publication',
+        'node.type.publication',
         'taxonomy.vocabulary.' . $vocabulary,
       ],
     ];
