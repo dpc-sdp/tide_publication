@@ -1080,7 +1080,7 @@ function tide_publication_update_8016() {
   if ($field->get('field_type') === 'entity_reference') {
     $new_field = $field->toArray();
     $new_field['field_type'] = 'entity_reference';
-    $new_field['description'] = 'Start typing to choose one publication author.';
+    $new_field['description'] = 'Start typing to choose one publication author. (Authors are added in the organisation taxonomy by your Site Admins.)';
     $new_field['dependencies'] = [
       'config' => [
         'field.storage.' . $config->get('id'),
