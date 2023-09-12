@@ -10,7 +10,7 @@ field_name: field_publication_authors
 entity_type: node
 bundle: publication
 label: 'Publication author'
-description: 'Start typing to choose one publication author.'
+description: 'Start typing to choose one publication author. (Authors are added in the organisation taxonomy by your Site Admins.)'
 required: false
 translatable: false
 default_value: {  }
