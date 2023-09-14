@@ -356,4 +356,7 @@ function tide_publication_form_alter(&$form, FormStateInterface $form_state, $fo
       }
     }
   }
+  if (isset($form['field_publication_authors'])) {
+    $form['field_publication_authors']['widget'][0]['target_id']['#placeholder'] = t('Start typing');
+  }
 }
