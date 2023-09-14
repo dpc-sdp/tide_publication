@@ -9,6 +9,8 @@ use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Item\Field;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\tide_publication\TidePublicationOperation;
 use Drupal\user\Entity\Role;
 use Drupal\workflows\Entity\Workflow;
 
@@ -1054,5 +1056,48 @@ function tide_publication_update_8015() {
   if (isset($field_group['group_publication_metadata'])) {
     $form_display->setThirdPartySetting('field_group', 'group_publication_metadata', $group_settings);
     $form_display->save();
+  }
+}
+
+/**
+ * Update field_publication_authors cardinality and vocabulary to organisation.
+ */
+function tide_publication_update_8016() {
+  $tidePublicationOperation = new TidePublicationOperation();
+  $vocabulary = 'organisation';
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('field.storage.node.field_publication_authors');
+  $config->set('cardinality', 1);
+  $config->save();
+
+  // Creates vocabulary if doesn't exist.
+  $vocabularies = Vocabulary::loadMultiple();
+  if (!isset($vocabularies[$vocabulary])) {
+    $tidePublicationOperation->createVocabulary($vocabulary);
+  }
+
+  $field = FieldConfig::loadByName('node', 'publication', 'field_publication_authors');
+  if ($field->get('field_type') === 'entity_reference') {
+    $new_field = $field->toArray();
+    $new_field['field_type'] = 'entity_reference';
+    $new_field['description'] = 'Start typing to choose one publication author. (Authors are added in the organisation taxonomy by your Site Admins.)';
+    $new_field['dependencies'] = [
+      'config' => [
+        'field.storage.' . $config->get('id'),
+        'node.type.publication',
+        'taxonomy.vocabulary.' . $vocabulary,
+      ],
+    ];
+    $new_field['settings'] = [
+      'handler_settings' => [
+        'target_bundles' => [
+          'department' => $vocabulary,
+        ],
+      ],
+    ];
+    $new_field = FieldConfig::create($new_field);
+    $new_field->original = $field;
+    $new_field->enforceIsNew(FALSE);
+    $new_field->save();
   }
 }
