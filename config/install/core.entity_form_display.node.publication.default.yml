@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.publication.field_landing_page_show_contact
     - field.field.node.publication.field_landing_page_summary
     - field.field.node.publication.field_license_type
+    - field.field.node.publication.field_metatags
     - field.field.node.publication.field_node_display_headings
     - field.field.node.publication.field_node_documents
     - field.field.node.publication.field_publication_authors
@@ -32,6 +33,7 @@ dependencies:
     - field_group
     - inline_entity_form
     - maxlength
+    - metatag
     - paragraphs
     - path
 third_party_settings:
@@ -313,6 +315,14 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_metatags:
+    type: metatag_firehose
+    weight: 15
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
+    third_party_settings: {  }
   field_node_display_headings:
     weight: 24
     settings: {  }

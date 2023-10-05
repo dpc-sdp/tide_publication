@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.publication_page.field_landing_page_intro_text
     - field.field.node.publication_page.field_landing_page_show_contact
     - field.field.node.publication_page.field_landing_page_summary
+    - field.field.node.publication_page.field_metatags
     - field.field.node.publication_page.field_node_display_headings
     - field.field.node.publication_page.field_publication
     - field.field.node.publication_page.field_related_links
@@ -25,8 +26,10 @@ dependencies:
     - entity_hierarchy
     - field_group
     - maxlength
+    - metatag
     - paragraphs
     - path
+    - tide_site_restriction
 third_party_settings:
   field_group:
     group_contact:
@@ -269,6 +272,14 @@ content:
         maxlength_js_truncate_html: false
     type: string_textarea
     region: content
+  field_metatags:
+    type: metatag_firehose
+    weight: 15
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
+    third_party_settings: {  }
   field_node_display_headings:
     weight: 24
     settings: {  }
@@ -351,6 +362,11 @@ content:
       display_label: true
     weight: 7
     region: content
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

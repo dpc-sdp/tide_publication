@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.publication.field_landing_page_show_contact
     - field.field.node.publication.field_landing_page_summary
     - field.field.node.publication.field_license_type
+    - field.field.node.publication.field_metatags
     - field.field.node.publication.field_node_documents
     - field.field.node.publication.field_publication_authors
     - field.field.node.publication.field_publication_date
@@ -26,6 +27,7 @@ dependencies:
   module:
     - datetime
     - entity_reference_revisions
+    - metatag
     - options
     - user
 id: node.publication.default
@@ -108,6 +110,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_metatags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 128
     region: content
   field_node_documents:
     weight: 108
