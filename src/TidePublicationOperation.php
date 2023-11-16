@@ -21,7 +21,6 @@ class TidePublicationOperation {
       return;
     }
     $editorial_workflow = Workflow::load('editorial');
-    $editorial_workflow = Workflow::load('editorial');
     if ($editorial_workflow) {
       $editorial_workflow->getTypePlugin()->addEntityTypeAndBundle('node', 'publication');
       $editorial_workflow->getTypePlugin()->addEntityTypeAndBundle('node', 'publication_page');
