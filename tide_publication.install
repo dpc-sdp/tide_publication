@@ -7,6 +7,8 @@
 
 use Drupal\tide_publication\TidePublicationOperation;
 
+use Drupal\taxonomy\Entity\Vocabulary;
+
 /**
  * Implements hook_install().
  */
@@ -20,6 +22,12 @@ function tide_publication_install() {
   TidePublicationOperation::addToScheduledTransitions();
   TidePublicationOperation::assignNecessaryPermissions(FALSE);
   TidePublicationOperation::addFieldsToSearchApi();
+
+  // Creates vocabulary if doesn't exist.
+  $vocabularies = Vocabulary::loadMultiple();
+  if (!isset($vocabularies['organisation'])) {
+    TidePublicationOperation::createVocabulary('organisation');
+  }
 
 }
 

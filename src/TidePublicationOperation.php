@@ -3,6 +3,7 @@
 namespace Drupal\tide_publication;
 
 use Drupal\search_api\Item\Field;
+use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\user\Entity\Role;
 use Drupal\workflows\Entity\Workflow;
 
@@ -201,6 +202,21 @@ class TidePublicationOperation {
     }
 
     $index->save();
+  }
+
+  /**
+   * Creates a new vocabulary.
+   *
+   * @param string $vocabulary
+   *   The new vocabulary.
+   */
+  public static function createVocabulary(string $vocabulary) {
+    $vocabulary = Vocabulary::create([
+      'vid' => $vocabulary,
+      'description' => '',
+      'name' => ucfirst($vocabulary),
+    ]);
+    $vocabulary->save();
   }
 
 }
