@@ -15,8 +15,6 @@ use Drupal\tide_publication\Navigation\Next;
 use Drupal\tide_publication\Navigation\Previous;
 use Drupal\tide_publication\Navigation\Root;
 use Drupal\tide_publication\TidePublicationFieldStorageDefinition;
-use Drupal\user\Entity\Role;
-use Drupal\workflows\Entity\Workflow;
 
 /**
  * Implements hook_entity_bundle_create().
@@ -24,53 +22,6 @@ use Drupal\workflows\Entity\Workflow;
 function tide_publication_entity_bundle_create($entity_type_id, $bundle) {
   /** @var \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler */
   $moduleHandler = \Drupal::service('module_handler');
-
-  if ($entity_type_id == 'node' && in_array($bundle, [
-    'publication',
-    'publication_page',
-  ])) {
-    // Grant permissions on Publication and Publication Page content types to
-    // Approver and Editor.
-    $roles = ['approver', 'editor', 'site_admin'];
-    $permissions = [
-      'create publication content',
-      'delete any publication content',
-      'delete own publication content',
-      'delete publication revisions',
-      'edit any publication content',
-      'edit own publication content',
-      'revert publication revisions',
-      'view publication revisions',
-      'create publication_page content',
-      'delete any publication_page content',
-      'delete own publication_page content',
-      'delete publication_page revisions',
-      'edit any publication_page content',
-      'edit own publication_page content',
-      'revert publication_page revisions',
-      'view publication_page revisions',
-    ];
-
-    foreach ($roles as $role_name) {
-      $role = Role::load($role_name);
-      if ($role) {
-        foreach ($permissions as $permission) {
-          $role->grantPermission($permission);
-        }
-        $role->save();
-      }
-    }
-
-    // Enable Editorial workflow if workflow module is enabled.
-    $moduleHandler = \Drupal::service('module_handler');
-    if ($moduleHandler->moduleExists('workflows')) {
-      $editorial_workflow = Workflow::load('editorial');
-      if ($editorial_workflow) {
-        $editorial_workflow->getTypePlugin()->addEntityTypeAndBundle('node', $bundle);
-        $editorial_workflow->save();
-      }
-    }
-  }
 
   // Add the Embedded Webform paragraphs to Publication Page
   // components if exists.

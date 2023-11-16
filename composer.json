@@ -1,5 +1,5 @@
 {
-  "description": "Publication content type and related configuration for Tide Drupal 8 distribution",
+  "description": "Publication content type and related configuration for Tide Drupal 10 distribution",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "alpha",
   "name": "dpc-sdp/tide_publication",
@@ -13,10 +13,10 @@
   "require": {
     "dpc-sdp/tide_core": "dev-reference",
     "dpc-sdp/tide_landing_page": "dev-reference",
-    "drupal/entity_hierarchy": "~2.0"
+    "drupal/entity_hierarchy": "^3.3"
   },
   "suggest": {
-    "dpc-sdp/tide_api:^3.0.0": "Allows to use Drupal in headless mode"
+    "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode"
   },
   "type": "drupal-module"
 }

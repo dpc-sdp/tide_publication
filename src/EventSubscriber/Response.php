@@ -5,7 +5,7 @@ namespace Drupal\tide_publication\EventSubscriber;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableResponseInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -33,10 +33,10 @@ class Response implements EventSubscriberInterface {
   /**
    * Add Publication Nav cache context and tags of JSON API response.
    *
-   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
    *   The event object.
    */
-  public function addPublicationNavigationCacheContext(FilterResponseEvent $event) {
+  public function addPublicationNavigationCacheContext(ResponseEvent $event) {
     $request = $event->getRequest();
 
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
