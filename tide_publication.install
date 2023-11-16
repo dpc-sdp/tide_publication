@@ -5,9 +5,8 @@
  * Install file.
  */
 
-use Drupal\tide_publication\TidePublicationOperation;
-
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\tide_publication\TidePublicationOperation;
 
 /**
  * Implements hook_install().
