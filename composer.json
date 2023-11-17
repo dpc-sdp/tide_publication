@@ -13,7 +13,7 @@
   "require": {
     "dpc-sdp/tide_core": "dev-reference",
     "dpc-sdp/tide_landing_page": "dev-reference",
-    "drupal/entity_hierarchy": "^3.3"
+    "drupal/entity_hierarchy": "4.x"
   },
   "suggest": {
     "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode"
