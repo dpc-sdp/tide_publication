@@ -5,6 +5,7 @@
  * Install file.
  */
 
+use Drupal\field\Entity\FieldConfig;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\tide_publication\TidePublicationOperation;
 
@@ -45,4 +46,47 @@ function tide_publication_update_10001() {
   $config = $config_factory->getEditable('pathauto.pattern.publication_pages');
   $config->set('selection_criteria.96994a80-9dfb-4bf3-b9cf-7fc3e3503c56.id', 'entity_bundle:node');
   $config->save();
+}
+
+/**
+ * Update field_publication_authors cardinality and vocabulary to organisation.
+ */
+function tide_publication_update_10002() {
+  $tidePublicationOperation = new TidePublicationOperation();
+  $vocabulary = 'organisation';
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('field.storage.node.field_publication_authors');
+  $config->set('cardinality', 1);
+  $config->save();
+
+  // Creates vocabulary if doesn't exist.
+  $vocabularies = Vocabulary::loadMultiple();
+  if (!isset($vocabularies[$vocabulary])) {
+    $tidePublicationOperation->createVocabulary($vocabulary);
+  }
+
+  $field = FieldConfig::loadByName('node', 'publication', 'field_publication_authors');
+  if ($field->get('field_type') === 'entity_reference') {
+    $new_field = $field->toArray();
+    $new_field['field_type'] = 'entity_reference';
+    $new_field['description'] = 'Start typing to choose one publication author. (Authors are added in the organisation taxonomy by your Site Admins.)';
+    $new_field['dependencies'] = [
+      'config' => [
+        'field.storage.' . $config->get('id'),
+        'node.type.publication',
+        'taxonomy.vocabulary.' . $vocabulary,
+      ],
+    ];
+    $new_field['settings'] = [
+      'handler_settings' => [
+        'target_bundles' => [
+          'department' => $vocabulary,
+        ],
+      ],
+    ];
+    $new_field = FieldConfig::create($new_field);
+    $new_field->original = $field;
+    $new_field->enforceIsNew(FALSE);
+    $new_field->save();
+  }
 }
