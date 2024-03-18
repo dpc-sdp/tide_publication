@@ -22,12 +22,14 @@ dependencies:
     - field.field.node.publication.field_show_table_of_content
     - field.field.node.publication.field_tags
     - field.field.node.publication.field_topic
+    - field.field.node.publication.field_content_category
     - node.type.publication
   module:
     - datetime
     - entity_reference_revisions
     - options
     - user
+    - term_reference_tree
 id: node.publication.default
 targetEntityType: node
 bundle: publication
@@ -209,6 +211,17 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_content_category:
+    type: term_reference_tree
+    weight: 5
+    region: content
+    settings:
+      start_minimized: true
+      leaves_only: true
+      select_parents: false
+      cascading_selection: 0
+      max_depth: 0
+    third_party_settings: { }
   links:
     weight: 100
     region: content
