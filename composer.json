@@ -6,11 +6,11 @@
   "require": {
     "dpc-sdp/tide_core": "^4.0.0",
     "dpc-sdp/tide_landing_page": "^4.0.0",
-    "drupal/entity_hierarchy": "4.x"
+    "drupal/entity_hierarchy": "4.x",
+    "doctrine/dbal": "3.7.1"
   },
   "suggest": {
-    "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode",
-    "doctrine/dbal": "3.7.1"
+    "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode"
    },
   "repositories": {
     "drupal": {
