@@ -9,7 +9,8 @@
     "drupal/entity_hierarchy": "4.x"
   },
   "suggest": {
-    "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode"
+    "dpc-sdp/tide_api:^4.0.0": "Allows to use Drupal in headless mode",
+    "doctrine/dbal": "3.7.1"
    },
   "repositories": {
     "drupal": {
