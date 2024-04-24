@@ -49,6 +49,15 @@ function tide_publication_update_10001() {
 }
 
 /**
+ * Implements hook_update_dependencies().
+ */
+function tide_publication_update_dependencies() {
+  $dependencies = [];
+  $dependencies['tide_publication'][10003] = ['tide_core' => 10005];
+  return $dependencies;
+}
+
+/**
  * Update field_publication_authors cardinality and vocabulary to organisation.
  */
 function tide_publication_update_10002() {
@@ -89,4 +98,21 @@ function tide_publication_update_10002() {
     $new_field->enforceIsNew(FALSE);
     $new_field->save();
   }
+}
+
+/**
+ * Imports publication.field_content_category for existing sites.
+ */
+function tide_publication_update_10003() {
+  \Drupal::moduleHandler()->loadInclude('tide_core', 'inc', 'includes/helpers');
+  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_publication') . '/config/install'];
+  $config_read = _tide_read_config('field.field.node.publication.field_content_category', $config_location, TRUE);
+  $storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $id = $storage->getIDFromConfigName('field.field.node.publication.field_content_category', $storage->getEntityType()->getConfigPrefix());
+  if ($storage->load($id) == NULL) {
+    $config_entity = $storage->createFromStorageRecord($config_read);
+    $config_entity->save();
+  }
+  \Drupal::moduleHandler()->loadInclude('tide_core', 'inc', 'includes/updates');
+  _tide_core_content_category_form_display('publication');
 }
