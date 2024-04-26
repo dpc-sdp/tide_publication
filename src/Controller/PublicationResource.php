@@ -13,7 +13,6 @@ use Drupal\entity_hierarchy\Storage\NestedSetNodeKeyFactory;
 use Drupal\entity_hierarchy\Storage\NestedSetStorage;
 use Drupal\entity_hierarchy\Storage\NestedSetStorageFactory;
 use Drupal\jsonapi\Controller\EntityResource;
-use Drupal\jsonapi\Exception\EntityAccessDeniedHttpException;
 use Drupal\jsonapi\JsonApiResource\Link;
 use Drupal\jsonapi\JsonApiResource\LinkCollection;
 use Drupal\jsonapi\Routing\Routes;
@@ -96,9 +95,6 @@ class PublicationResource extends EntityResource {
    *
    * @return \Drupal\jsonapi\ResourceResponse|\Symfony\Component\HttpFoundation\JsonResponse
    *   The response.
-   *
-   * @throws \Drupal\jsonapi\Exception\EntityAccessDeniedHttpException|\Exception
-   *   Thrown when access to the entity is not allowed.
    */
   public function getHierarchy(EntityInterface $entity, Request $request) {
     if (!($entity instanceof ContentEntityInterface)) {
@@ -106,10 +102,6 @@ class PublicationResource extends EntityResource {
     }
 
     $resource_object = $this->entityAccessChecker->getAccessCheckedResourceObject($entity);
-    if ($resource_object instanceof EntityAccessDeniedHttpException) {
-      throw $resource_object;
-    }
-
     if ($entity->bundle() != 'publication') {
       $response = $this->buildWrappedResponse($resource_object, $request, $this->getIncludes($request, $resource_object));
       return $response;
