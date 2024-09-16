@@ -16,12 +16,6 @@
 'delete publication revisions':
   title: 'Delete publication revisions'
   description: 'Allows user to delete publication revisions.'
-'delete publication revisions':
-  title: 'Delete publication revisions'
-  description: 'Allows user to delete publication revisions.'
-'delete publication revisions':
-  title: 'Delete publication revisions'
-  description: 'Allows user to delete publication revisions.'
 'delete own publication content':
   title: 'Delete own publication content'
   description: 'Allows user to delete own publication content.'
@@ -59,12 +53,6 @@
 'delete any publication_page content':
   title: 'Delete any publication_page content'
   description: 'Allows user to delete any publication_page content.'
-'delete publication_page revisions':
-  title: 'Delete publication_page revisions'
-  description: 'Allows user to delete publication_page revisions.'
-'delete publication_page revisions':
-  title: 'Delete publication_page revisions'
-  description: 'Allows user to delete publication_page revisions.'
 'delete publication_page revisions':
   title: 'Delete publication_page revisions'
   description: 'Allows user to delete publication_page revisions.'
